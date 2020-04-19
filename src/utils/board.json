@@ -1,0 +1,71 @@
+{
+    "hexes": [
+        {
+            "x": 2,
+            "y": 2,
+            "vertices" : [0,1,2,3,4,5],
+            "edges" : [0,1,2,3,4,5],
+            "type" : "hills",
+            "number" : 6
+        }
+    ],
+    "vertices": [
+        {
+            "hexes" : [0],
+            "edges" : [0,5]
+        },
+        {
+            "hexes" : [0],
+            "edges" : [0,1],
+            "settlement" : {
+                "level" : 1,
+                "player": 1
+            }
+        },
+        {
+            "hexes" : [0],
+            "edges" : [1,2]
+        },
+        {
+            "hexes" : [0],
+            "edges" : [2,3]
+        },
+        {
+            "hexes" : [0],
+            "edges" : [3,4]
+        },
+        {
+            "hexes" : [0],
+            "edges" : [4,5]
+        }
+    ],
+    "edges": [
+        {
+            "vertices" : [0,1],
+            "hexes" : [0],
+            "road" : {
+                "player" : 1
+            }
+        },
+        {
+            "vertices" : [1,2],
+            "hexes" : [0]
+        },
+        {
+            "vertices" : [2,3],
+            "hexes" : [0]
+        },
+        {
+            "vertices" : [3,4],
+            "hexes" : [0]
+        },
+        {
+            "vertices" : [4,5],
+            "hexes" : [0]
+        },
+        {
+            "vertices" : [5,0],
+            "hexes" : [0]
+        }
+    ]
+}
