@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-d
 import { Grid, CssBaseline } from '@material-ui/core';
 
 import Error404Page from './pages/error-404/error-404';
-import GamePage from './pages/game/game';
+import MainPage from './pages/main/main';
 
 /**
  * Theme of the website.
@@ -49,7 +49,7 @@ const theme = createMuiTheme({
       <Router>
           <Switch>
             <Route exact path="/" render={(props) => <Redirect to="/game" />} />
-            <Route path="/game" component={GamePage} />
+            <Route path="/game" component={MainPage} />
             <Route render={(props) => (
               <Grid 
               container

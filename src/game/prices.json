@@ -1,0 +1,21 @@
+{
+    "road": {
+        "wood": 1,
+        "clay": 1
+    },
+    "settlement" : {
+        "clay": 1,
+        "wood": 1,
+        "wheat": 1,
+        "sheep": 1
+    },
+    "town" : {
+        "wheat": 2,
+        "stone": 3
+    },
+    "development" : {
+        "stone": 1,
+        "wheat": 1,
+        "sheep": 1
+    }
+}

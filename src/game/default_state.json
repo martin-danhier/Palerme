@@ -1,0 +1,38 @@
+{
+    "dices" : null,
+    "hexes": {
+        "0" : {
+            "0" : {
+                "type" : "hills",
+                "number" : 6
+            }
+        }
+    },
+    "roads" : [],
+    "settlements" : [
+        {
+            "player": "0",
+            "level": 1,
+            "hexes": [[0,0],[1,0],[1,1]]
+        }
+    ],
+    "harbors" : [
+        {
+            "hexes": [[0,0], [1,1]],
+            "type" : "wood"
+        }
+    ],
+    "robber": [2,1],
+    "players" : {},
+    "awards" : {
+        "longestRoad" : null,
+        "mostPowerfulArmy" : null
+    },
+    "developmentsLeft" : {
+        "progress_resources": 3,
+        "progress_roads": 3,
+        "progress_monopoly": 3,
+        "victory_point": 5,
+        "knight": 20
+    }
+}
