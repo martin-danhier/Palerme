@@ -1,4 +1,4 @@
-import { substractCoords, addCoords, sameVertices, sortCoords } from "./hexes";
+import { substractCoords, addCoords, sameVertices, sortCoords, isCoordInArray } from "./hexes";
 
 export function checkMostPowerfulArmyAward(G, ctx) {
     let max = 0;
@@ -40,7 +40,6 @@ export function checkLongestRoadAward(G, ctx) {
     let visitedPaths = [];
 
     for (let i = 0; i < G.roads.length; i++) {
-
         console.log(`Route ${i}`);
 
         let player = G.roads[i].player;
@@ -78,19 +77,18 @@ export function checkLongestRoadAward(G, ctx) {
             }
         }
 
-        console.log(`A: (${adjacent['A']}), B: (${adjacent['B']})`);
+        // console.log(`A: (${adjacent['A']}), B: (${adjacent['B']})`);
 
         for (let side of ['A', 'B']){
             for (let item of adjacent[side]){
                 let path = [i,item].sort();
-                if (!visitedPaths.includes(path)){
+                if (!isCoordInArray(path, visitedPaths)){
                     visitedPaths.push(path);
                     let newSide = invertSide(side);
-                    console.log(newSide);
                     routes[player].push({
                         length: 2,
-                        begin: {road: i, newSide, ended: false},
-                        end: {road: item, newSide, ended: false}
+                        begin: {road: i, side : newSide, ended: false},
+                        end: {road: item, side: newSide, ended: false}
                     });
 
                 }
@@ -102,7 +100,7 @@ export function checkLongestRoadAward(G, ctx) {
             let route = routes[player][routeID];
             let pos = getPos(route, i);
             if (pos !== "" && route[pos].ended === false) {
-
+                
                 // If the road goes nowhere, end it
                 if (adjacent[route[pos].side].length === 0) {
                     route[pos].ended = true;
@@ -110,8 +108,11 @@ export function checkLongestRoadAward(G, ctx) {
                 // One connection -> expand the route
                 else if (adjacent[route[pos].side].length === 1) {
                     // greater, not checked: expand
-                    if (adjacent[route[pos].side][0] > i) {
+
+                    let path = [i,adjacent[route[pos].side][0]].sort();
+                    if (adjacent[route[pos].side][0] > i && !isCoordInArray(path, visitedPaths)) {
                         expandRoute(routes, player, route, pos, adjacent[route[pos].side][0] )
+                        visitedPaths.push(path);
                     }
                     // smaller, already checked: merge
                     else {
@@ -125,9 +126,11 @@ export function checkLongestRoadAward(G, ctx) {
                 else if (adjacent[route[pos].side].length === 2) {
                     let counter = 0;
 
-                    for (let adj of adjacent[route[pos].side]) {
-                        if (adj > i) {
+                    for (let adj of adjacent[route[pos].side] ) {
+                        let path = [i,adj].sort();
+                        if (adj > i && !isCoordInArray(path, visitedPaths)) {
                             expandRoute(routes, player, route, pos, adj);
+                            visitedPaths.push(path);
                             counter += 1;
                         }
                     }
@@ -150,7 +153,10 @@ export function checkLongestRoadAward(G, ctx) {
 
     }
     console.log(routes);
+    console.log(visitedPaths);
 }
+
+
 
 function expandRoute(routes, player, route, pos, adj) {
     let clone = Object.assign({}, route);
