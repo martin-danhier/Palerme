@@ -24,21 +24,38 @@ export function checkMostPowerfulArmyAward(G, ctx) {
 }
 
 export function checkLongestRoadAward(G, ctx) {
+    let routes = {
+        '0': [{
+            length: 2,
+            begin: { road: 0, side: 'A', ended: true },
+            end: { road: 8, side: 'A', ended: false },
+        }, {
+            length: 2,
+            begin: { road: 2, side: 'B', ended: true },
+            end: { road: 4, side: 'B', ended: false },
+        },]
+    };
 
-    
-    let roadsAdjacency = [];
     let memory = {};
+    let visitedPaths = [];
 
     for (let i = 0; i < G.roads.length; i++) {
 
-        let adjacentA = [];
-        let adjacentB = [];
+        console.log(`Route ${i}`);
+
+        let player = G.roads[i].player;
+
+        // add player
+        if (routes[player] === undefined) {
+            routes[player] = [];
+        }
+
+        let adjacent = { 'A': [], 'B': [] };
 
         // compute the data if it doesn't exist already
         if (memory[i] === undefined) {
             memory[i] = getRoadData(G, i);
         }
-
 
         // Get adjacent roads        
         for (let j = 0; j < G.roads.length; j++) {
@@ -51,21 +68,131 @@ export function checkLongestRoadAward(G, ctx) {
 
                 // Check adjacency in A
                 if (sameVertices(memory[i].AVertex, memory[j].AVertex)) {
-                    console.log("voisin en A");
-                    adjacentA.push(j);
+                    adjacent['A'].push(j);
                 }
 
                 // Check adjacency in B
                 else if (sameVertices(memory[i].BVertex, memory[j].BVertex)) {
-                    console.log("voisin en B");
-                    adjacentB.push(j);
+                    adjacent['B'].push(j);
                 }
             }
         }
 
-        roadsAdjacency.push({A: adjacentA, B: adjacentB});
+        console.log(`A: (${adjacent['A']}), B: (${adjacent['B']})`);
+
+        for (let side of ['A', 'B']){
+            for (let item of adjacent[side]){
+                let path = [i,item].sort();
+                if (!visitedPaths.includes(path)){
+                    visitedPaths.push(path);
+                    let newSide = invertSide(side);
+                    console.log(newSide);
+                    routes[player].push({
+                        length: 2,
+                        begin: {road: i, newSide, ended: false},
+                        end: {road: item, newSide, ended: false}
+                    });
+
+                }
+            }
+        }
+
+        // Check if this road is already connected to a known route
+        for (let routeID = 0; routeID < routes[player].length; routeID++) {
+            let route = routes[player][routeID];
+            let pos = getPos(route, i);
+            if (pos !== "" && route[pos].ended === false) {
+
+                // If the road goes nowhere, end it
+                if (adjacent[route[pos].side].length === 0) {
+                    route[pos].ended = true;
+                }
+                // One connection -> expand the route
+                else if (adjacent[route[pos].side].length === 1) {
+                    // greater, not checked: expand
+                    if (adjacent[route[pos].side][0] > i) {
+                        expandRoute(routes, player, route, pos, adjacent[route[pos].side][0] )
+                    }
+                    // smaller, already checked: merge
+                    else {
+                        mergeRoute(routes, player, route, pos, i);
+                    }
+                    
+                    routes[player].splice(routeID, 1);
+
+                }
+                // 2 adjacent roads : consider the two paths, and consider this route as two routes
+                else if (adjacent[route[pos].side].length === 2) {
+                    let counter = 0;
+
+                    for (let adj of adjacent[route[pos].side]) {
+                        if (adj > i) {
+                            expandRoute(routes, player, route, pos, adj);
+                            counter += 1;
+                        }
+                    }
+                    // If at least one of the adjacent roads is smaller
+                    // Road smaller => already visited => should merge with this one
+                    if (counter < 2) {
+                        mergeRoute(routes, player, route, pos, i);
+                    }
+
+                    // delete previous version
+                    routes[player].splice(routeID, 1);
+                }
+
+
+
+            }
+
+        }
+
+
     }
-    console.log(roadsAdjacency);
+    console.log(routes);
+}
+
+function expandRoute(routes, player, route, pos, adj) {
+    let clone = Object.assign({}, route);
+    clone[pos] = {
+        road: adj,
+        side: invertSide(clone[pos].side),
+        ended: false
+    };
+    clone.length += 1;
+    routes[player].push(clone);
+}
+
+function mergeRoute(routes, player, route, pos, i) {
+    let deletionList = [];
+
+    // find route to merge
+    for (let otherRouteID = 0; otherRouteID < routes[player].length; otherRouteID++) {
+        let otherRoute = routes[player][otherRouteID];
+
+        if (otherRoute !== route) {
+
+            let pos2 = getPos(otherRoute, i);
+            // if route found
+            if (pos2 !== "" && otherRoute[pos2].ended === false && otherRoute[pos2].side !== route[pos].side) {
+
+                let clone = Object.assign({}, otherRoute);
+
+                clone[pos2] = route[invertPos(pos)];
+                clone.length += route.length - 1;
+
+                // Apply
+                routes[player].push(clone);
+                // Register for deletion
+                deletionList.push(otherRouteID);
+            }
+        }
+    }
+
+    // Delete route
+    for (let id of deletionList.reverse()) {
+        routes[player].splice(id, 1);
+    }
 }
 
 function getRoadData(G, index) {
@@ -131,4 +258,31 @@ function getRoadData(G, index) {
     ]);
 
     return { type, AVertex, BVertex };
+}
+
+function invertSide(side) {
+    if (side === 'A') {
+        return 'B';
+    }
+    else if (side === 'B') {
+        return 'A';
+    }
+}
+
+function getPos(route, number) {
+    let pos = "";
+    if (route.begin.road === number) {
+        pos = "begin";
+    }
+    else if (route.end.road === number) {
+        pos = "end"
+    }
+    return pos;
+}
+
+function invertPos(pos) {
+    if (pos === 'begin')
+        return 'end';
+    else if (pos === 'end')
+        return 'begin';
 }
