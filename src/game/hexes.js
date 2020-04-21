@@ -22,6 +22,7 @@ export function addHex(data, r, l, type, number) {
 
 export function sortCoords(coords) {
     coords.sort(compareCoords);
+    return coords;
 }
 
 export function compareCoords(coord1, coord2) {
@@ -90,35 +91,103 @@ export function isThereSettlement(data, coords) {
     return false;
 }
 
-export function getResourcesOfSettlement(G, settlement) {
-    let resources = {};
-    for (let hex of settlement.hexes) {
-        if (G.hexes[hex[0]] !== undefined && G.hexes[hex[0]][hex[1]] !== undefined) {
-            let type = G.hexes[hex[0]][hex[1]].type;
-            let number = G.hexes[hex[0]][hex[1]].number;
-            if (type !== "desert" && type !== "ocean" && number !== undefined) {
-                if (resources[number] === undefined){
-                    resources[number] = [];
-                }
-                resources[number].push(convertTypeToResource(type));
-            }
 
+
+export function isCoordInArray(coord, array) {
+    for (let item of array) {
+        if (sameCoords(coord, item)) {
+            return true;
         }
     }
-    return resources;
+    return false;
 }
 
-export function convertTypeToResource(type) {
-    if (type === "hills") return "clay";
-    else if (type === "mountains") return "stone";
-    else if (type === "meadow") return "sheep";
-    else if (type === "field") return "wheat";
-    else if (type === "forest") return "wood";
-    else throw new Error("Invalid hex type");
+export function isVertexAdjacentToEdge(vertex, edge) {
+    return isCoordInArray(edge[0], vertex) && isCoordInArray(edge[1], vertex);
 }
 
-export function giveResource(G, resource, player, count){
-    for (let i = 0; i < count; i++) {
-        G.players[player].deck.resources.push(resource);
+export function playerHasHarbor(G, player, harborType) {
+    for (let harbor of G.harbors) {
+        if (harbor.type === harborType) {
+            for (let settlement of G.settlements) {
+                if (settlement.player === player && isVertexAdjacentToEdge(settlement.hexes, harbor.hexes)) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+export function playerIsNextToRobber(G, player) {
+    for (let settlement of G.settlements) {
+        if (settlement.player === player && isCoordInArray(G.robber, settlement.hexes)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+export function substractCoords(coord1, coord2) {
+    return [coord1[0] - coord2[0], coord1[1] - coord2[1]];
+}
+
+export function addCoords(coord1, coord2){
+    return [coord1[0] + coord2[0], coord1[1] + coord2[1]];
+}
+
+// [1,0] -> [1,-1] -> [0,-1] -> [-1,0] -> [-1,1] -> [0,1] -> [1,0]...
+export function rotationCounterClockwise(center, start) {
+    let dCoord = substractCoords(start, center);
+    let x = null;
+    if (dCoord[0] === 0) {
+        x = [dCoord[1], 0];
+    } else if (dCoord[1] === 0) {
+        x = [dCoord[0], - dCoord[0]];
+    } else {
+        x = [0, dCoord[1]];
+    }
+    return addCoords(center, x);
+}
+
+// [1,0] -> [0,1] -> [-1,1] -> [-1,0] -> [0,-1] -> [1,-1] -> [1,0]...
+export function rotationClockwise(center, start) {
+    let dCoord = substractCoords(start, center);
+    let x = null;
+    if (dCoord[0] === 0) {
+        x = [- dCoord[1], dCoord[1]];
+    } else if (dCoord[1] === 0) {
+        x = [0, dCoord[0]];
+    } else {
+        x = [dCoord[0], 0];
+    }
+    return addCoords(center, x);
+}
+
+export function areEdgesAdjacents(edge1, edge2) {
+    // Get hex in common
+    let common = null;
+    let other1 = null;
+    let other2 = null;
+
+    for (let i = 0; i < 2; i++) {
+        for (let j = 0; j < 2; j++) {
+            if (sameCoords(edge1[i], edge2[j])) {
+                common = edge1[i];
+                other1 = edge1[(i + 1) % 2];
+                other2 = edge2[(j + 1) % 2];
+                break;
+            }
+        }
+    }
+
+    // 1. One hex in common
+    if (common != null) {
+        // 2. the two others hex are adjacents
+        return sameCoords(rotationClockwise(common, other1), other2)
+            || sameCoords(rotationCounterClockwise(common, other1), other2);
+    }
+    else {
+        return false;
     }
 }

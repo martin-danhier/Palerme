@@ -1,33 +1,198 @@
 {
     "dices" : null,
-    "hexes": {
-        "0" : {
-            "0" : {
-                "type" : "hills",
-                "number" : 6
-            }
+    "players" : {},
+    "roads" : [
+        {
+            "player" : "0",
+            "hexes" : [[1,1],[1,2]]
+        },
+        {
+            "player" : "0",
+            "hexes" : [[1,2],[2,1]]
+        },
+        {
+            "player" : "0",
+            "hexes" : [[3,0],[4,0]]
+        },
+        {
+            "player" : "0",
+            "hexes" : [[3,1],[3,2]]
+        },
+        {
+            "player" : "1",
+            "hexes" : [[1,2],[1,3]]
+        },
+        {
+            "player" : "0",
+            "hexes" : [[2,2],[3,1]]
+        },
+        {
+            "player" : "1",
+            "hexes" : [[1,3],[2,2]]
+        },
+        {
+            "player" : "0",
+            "hexes" : [[2,1],[2,2]]
+        },
+        {
+            "player" : "0",
+            "hexes" : [[2,1],[3,1]]
         }
-    },
-    "roads" : [],
+    ],
     "settlements" : [
         {
-            "player": "0",
-            "level": 1,
-            "hexes": [[0,0],[1,0],[1,1]]
-        }
-    ],
-    "harbors" : [
+            "player" : "0",
+            "hexes" : [[0,3],[1,2],[1,3]],
+            "level" : 1
+        },
         {
-            "hexes": [[0,0], [1,1]],
-            "type" : "wood"
+            "player" : "0",
+            "hexes" : [[3,2],[4,1],[4,2]],
+            "level" : 1
+        },
+        {
+            "player" : "0",
+            "hexes" : [[3,0],[4,-1],[3,0]],
+            "level" : 1
+        },
+        {
+            "player" : "0",
+            "hexes" : [[-1,3],[0,2],[0,3]],
+            "level" : 1
         }
     ],
-    "robber": [2,1],
-    "players" : {},
+    "robber": [2,2],
     "awards" : {
         "longestRoad" : null,
         "mostPowerfulArmy" : null
     },
+    "trade" : {},
+    "tradeCounter" : 0,
+    "hexes": {
+        "0" : {
+            "2" : {
+                "type": "meadow",
+                "number" : 8
+            },
+             "3" : {
+                "type": "forest",
+                "number" : 10
+            },
+            "4" : {
+                "type": "field",
+                "number" : 9
+            }
+        },
+        "1" : {
+            "1" : {
+                "type": "meadow",
+                "number" : 3
+            },
+            "2" : {
+                "type": "field",
+                "number" : 5
+            },
+            "3" : {
+                "type": "mountains",
+                "number" : 6
+            },
+            "4" : {
+                "type": "meadow",
+                "number": 12
+            }
+        },
+        "2" : {
+            "0" : {
+                "type": "forest",
+                "number" : 6
+            },
+            "1" : {
+                "type": "mountains",
+                "number" : 4
+            },
+            "2" : {
+                "type": "desert"
+            },
+            "3" : {
+                "type": "forest",
+                "number" : 3
+            },
+            "4" : {
+                "type": "hills",
+                "number" : 11
+            }
+        },
+        "3" : {
+            "0" : {
+                "type": "field",
+                "number" : 2
+            },
+            "1" : {
+                "type": "hills",
+                "number" : 9
+            },
+            "2" : {
+                "type": "mountains",
+                "number" : 11
+            },
+            "3" : {
+                "type": "meadow",
+                "number": 4
+            }
+        },
+        "4" : {
+            "0" : {
+                "type": "forest",
+                "number" : 5
+            },
+            "1" : {
+                "type": "field",
+                "number": 10
+            },
+            "2" : {
+                "type": "hills",
+                "number": 8
+            }
+        }
+    },
+    "harbors" : [
+        {
+            "hexes": [[0,1], [1,1]],
+            "type" : "sheep"
+        },
+        {
+            "hexes" : [[2,-1], [2,0]],
+            "type" : "3:1"
+        },
+        {
+            "hexes" : [[3,0],[4,-1]],
+            "type": "stone"
+        },
+        {
+            "hexes" : [[4,1],[5,0]],
+            "type": "wheat"
+        },
+        {
+            "hexes" : [[4,2],[5,2]],
+            "type": "3:1"
+        },
+        {
+            "hexes": [[3,3],[3,4]],
+            "type" : "wood"
+        },
+        {
+            "hexes": [[1,4],[1,5]],
+            "type": "clay"
+        },
+        {
+            "hexes": [[-1,5],[0,4]],
+            "type": "3:1"
+        },
+        {
+            "hexes": [[-1,3],[0,3]],
+            "type": "3:1"
+        }
+    ],
     "developmentsLeft" : {
         "progress_resources": 3,
         "progress_roads": 3,
