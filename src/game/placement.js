@@ -36,6 +36,7 @@ export function placeSettlement(G, ctx, coords) {
             level: 1, // settlement
             hexes: coords
         });
+        G.players[ctx.currentPlayer].score += 1;
         return G;
     }
 }
@@ -47,6 +48,7 @@ export function placeTown(G, ctx, coords) {
     // If the settlement exists, is owned by the current player and is not a town
     if (s !== undefined && G.settlements[s].player === ctx.currentPlayer && G.settlements[s].level === 1){
         G.settlements[s].level = 2;
+        G.players[ctx.currentPlayer].score += 1;
         return G;
     }
 }
