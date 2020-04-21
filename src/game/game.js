@@ -22,13 +22,9 @@ import {
   chooseResources,
   monopoly
 } from './development';
-import {
-  checkLongestRoadAward
-} from './awards';
 
 // setup G
 function setup(ctx) {
-  console.log(ctx);
   // Load map scaffold
   let data = require('./default_state.json');
 
@@ -98,6 +94,7 @@ function rollDices(G, ctx) {
         value: moreThan7,
         next: {
           currentPlayer: 'moveRobber',
+          others: 'idle',
           moveLimit: 1,
           next: {
             currentPlayer: 'stealResource',
@@ -150,10 +147,41 @@ function rollDices(G, ctx) {
 
 }
 
+function countSecretVictoryPoint(G, player) {
+  let value = 0;
+  for (let dev of G.players[player].deck.developments){
+    if (dev.type === 'victory_point') {
+      value += 1;
+    }
+  }
+  return value;
+}
+
+function isVictory(G, ctx) {
+  for (let player of Object.keys(G.players)){
+    if (G.players[player].score + countSecretVictoryPoint(G,player) >= G.victoryRequirement){
+      console.log(`Player ${player} won the game with ${G.players[player].score + countSecretVictoryPoint(G,player)} points !`)
+      return { winner : player }
+    }
+  }
+}
+
+function shuffleDeck(G, ctx){
+  let player = ctx.playerID;
+  G.players[player].deck.resources = ctx.random.Shuffle(G.players[player].deck.resources);
+  return G;
+}
+
+function sortDeck(G, ctx) {
+  let player = ctx.playerID;
+  G.players[player].deck.resources = G.players[player].deck.resources.sort();
+  return G;
+}
+
 export const PalermeGame = {
   name: "Palerme",
   setup: setup,
-
+  endIf: isVictory,
   phases: {
     placement: {
       next: 'main',
@@ -220,7 +248,6 @@ export const PalermeGame = {
       turn: {
         order: TurnOrder.RESET,
         onBegin: (G, ctx) => {
-          checkLongestRoadAward(G, ctx);
 
           // Begin dice stage
           ctx.events.setActivePlayers({ currentPlayer: 'rollDices' });
@@ -258,7 +285,9 @@ export const PalermeGame = {
               acceptTradeOffer,
               makeTradeCounterOffer,
               cancelTradeOffer,
-              updateTradeOffer
+              updateTradeOffer,
+              shuffleDeck,
+              sortDeck
             }
           },
           tradeOnly: {
@@ -267,7 +296,9 @@ export const PalermeGame = {
               acceptTradeOffer,
               makeTradeCounterOffer,
               cancelTradeOffer,
-              updateTradeOffer
+              updateTradeOffer,
+              shuffleDeck,
+              sortDeck
             }
           },
           discardHalf: {
@@ -284,6 +315,9 @@ export const PalermeGame = {
           },
           monopoly: {
             moves: { monopoly },
+          },
+          idle: {
+            moves: {shuffleDeck, sortDeck}
           }
         }
       },

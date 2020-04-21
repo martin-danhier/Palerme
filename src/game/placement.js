@@ -1,6 +1,7 @@
 // Place roads/settlements/towns
 
 import { sortCoords, isThereRoad, isThereSettlement, getSettlement } from "./hexes";
+import { checkLongestRoadAward } from "./awards";
 
 /**
  * 
@@ -16,6 +17,8 @@ export function placeRoad(G, ctx, coords) {
             player: ctx.currentPlayer,
             hexes: coords,
         });
+        
+        checkLongestRoadAward(G, ctx);
         return G;
     }
 }
