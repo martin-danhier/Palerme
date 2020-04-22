@@ -109,7 +109,7 @@ export class PalermeBoard extends React.Component {
                             )
                         )}
                     </Layout>
-                    <Pattern id="forest" link="https://raw.githubusercontent.com/martin-danhier/Palerme/master/public/resources/forest.png" size={this.state.size}  />
+                    <Pattern id="forest" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/tile_forest.png?raw=true" size={this.state.size}  />
                 </HexGrid>
             </div>
         );
