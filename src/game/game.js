@@ -67,6 +67,44 @@ function setup(ctx) {
   return data;
 }
 
+function makePlayerView(G, playerID) {
+  if (playerID !== null && "players" in G) {
+    let clone = {};
+    clone.dices = G.dices;
+    // Modify players
+    clone.currentPlayer = G.players[playerID];
+    clone.otherPlayers = {};
+    for (let other of Object.keys(G.players)) {
+      if (other !== playerID) {
+        clone.otherPlayers[other] = {
+          name: G.players[other].name,
+          score: G.players[other].score,
+          knights: G.players[other].knights,
+          deck: {
+            developments: G.players[other].deck.developments.length,
+            resources: G.players[other].deck.resources.length,
+          },
+        }
+      }
+    }
+    // Put the rest
+    clone.roads = G.roads;
+    clone.settlements = G.settlements;
+    clone.hexes = G.hexes;
+    clone.robber = G.robber;
+    clone.awards = G.awards;
+    clone.trade = G.trade;
+    clone.harbors = G.harbors;
+    clone.victoryRequirement = G.victoryRequirement;
+
+    return clone;
+  }
+  else {
+    return G;
+  }
+
+}
+
 function rollDices(G, ctx) {
   // Roll the dices
   G.dices = ctx.random.Die(6, 2);
@@ -149,7 +187,7 @@ function rollDices(G, ctx) {
 
 function countSecretVictoryPoint(G, player) {
   let value = 0;
-  for (let dev of G.players[player].deck.developments){
+  for (let dev of G.players[player].deck.developments) {
     if (dev.type === 'victory_point') {
       value += 1;
     }
@@ -158,15 +196,15 @@ function countSecretVictoryPoint(G, player) {
 }
 
 function isVictory(G, ctx) {
-  for (let player of Object.keys(G.players)){
-    if (G.players[player].score + countSecretVictoryPoint(G,player) >= G.victoryRequirement){
-      console.log(`Player ${player} won the game with ${G.players[player].score + countSecretVictoryPoint(G,player)} points !`)
-      return { winner : player }
+  for (let player of Object.keys(G.players)) {
+    if (G.players[player].score + countSecretVictoryPoint(G, player) >= G.victoryRequirement) {
+      console.log(`Player ${player} won the game with ${G.players[player].score + countSecretVictoryPoint(G, player)} points !`)
+      return { winner: player }
     }
   }
 }
 
-function shuffleDeck(G, ctx){
+function shuffleDeck(G, ctx) {
   let player = ctx.playerID;
   G.players[player].deck.resources = ctx.random.Shuffle(G.players[player].deck.resources);
   return G;
@@ -182,6 +220,7 @@ export const PalermeGame = {
   name: "Palerme",
   setup: setup,
   endIf: isVictory,
+  playerView: (G, ctx, playerID) => makePlayerView(G, playerID),
   phases: {
     placement: {
       next: 'main',
@@ -264,60 +303,68 @@ export const PalermeGame = {
         stages: {
           // phase "placement"
           placeSettlement: {
-            moves: { placeSettlement }
+            moves: { placeSettlement: { move: placeSettlement, client: false } }
           },
           placeRoad: {
-            moves: { placeRoad }
+            moves: { placeRoad: { move: placeRoad, client: false } }
           },
           placeTown: {
-            moves: { placeTown }
+            moves: { placeTown: { move: placeTown, client: false } }
           },
           rollDices: {
-            moves: { rollDices },
+            moves: {
+              rollDices: {
+                move: rollDices,
+                client: false,
+              }
+            },
           },
           mainStage: {
             moves: {
-              buy,
-              tradeWithHarbors,
-              useDevelopment,
+              buy: { move: buy, client: false },
+              tradeWithHarbors: { move: tradeWithHarbors, client: false },
+              useDevelopment: { move: useDevelopment, client: false },
               //trade
-              makeTradeOffer,
-              acceptTradeOffer,
-              makeTradeCounterOffer,
-              cancelTradeOffer,
-              updateTradeOffer,
-              shuffleDeck,
-              sortDeck
+              makeTradeOffer: { move: makeTradeOffer, client: false },
+              acceptTradeOffer: { move: acceptTradeOffer, client: false },
+              makeTradeCounterOffer: { move: makeTradeCounterOffer, client: false },
+              cancelTradeOffer: { move: cancelTradeOffer, client: false },
+              updateTradeOffer: { move: updateTradeOffer, client: false },
+              shuffleDeck: { move: shuffleDeck, client: false },
+              sortDeck: { move: sortDeck, client: false }
             }
           },
           tradeOnly: {
             moves: {
-              makeTradeOffer,
-              acceptTradeOffer,
-              makeTradeCounterOffer,
-              cancelTradeOffer,
-              updateTradeOffer,
-              shuffleDeck,
-              sortDeck
+              makeTradeOffer: { move: makeTradeOffer, client: false },
+              acceptTradeOffer: { move: acceptTradeOffer, client: false },
+              makeTradeCounterOffer: { move: makeTradeCounterOffer, client: false },
+              cancelTradeOffer: { move: cancelTradeOffer, client: false },
+              updateTradeOffer: { move: updateTradeOffer, client: false },
+              shuffleDeck: { move: shuffleDeck, client: false },
+              sortDeck: { move: sortDeck, client: false }
             }
           },
           discardHalf: {
-            moves: { discardHalf },
+            moves: { discardHalf: { move: discardHalf, client: false } },
           },
           moveRobber: {
             moves: { moveRobber },
           },
           stealResource: {
-            moves: { stealResource },
+            moves: { stealResource: { move: stealResource, client: false } },
           },
           chooseResources: {
-            moves: { chooseResources },
+            moves: { chooseResources: { move: chooseResources, client: false } },
           },
           monopoly: {
-            moves: { monopoly },
+            moves: { monopoly: { move: monopoly, client: false } },
           },
           idle: {
-            moves: {shuffleDeck, sortDeck}
+            moves: {
+              shuffleDeck: { move: shuffleDeck, client: false },
+              sortDeck: { move: sortDeck, client: false }
+            }
           }
         }
       },

@@ -13,17 +13,29 @@ export function buy(G, ctx, product) {
             if (product === "road") {
                 ctx.events.setActivePlayers({
                     currentPlayer: 'placeRoad',
-                    others: 'tradeOnly',
+                    moveLimit: 1,
+                    next: {
+                        currentPlayer: 'mainStage',
+                        others: 'tradeOnly',
+                    }
                 });
             } else if (product === "settlement") {
                 ctx.events.setActivePlayers({
                     currentPlayer: 'placeSettlement',
-                    others: 'tradeOnly',
+                    moveLimit: 1,
+                    next: {
+                        currentPlayer: 'mainStage',
+                        others: 'tradeOnly',
+                    }
                 });
             } else if (product === "town") {
                 ctx.events.setActivePlayers({
                     currentPlayer: 'placeTown',
-                    others: 'tradeOnly',
+                    moveLimit: 1,
+                    next: {
+                        currentPlayer: 'mainStage',
+                        others: 'tradeOnly',
+                    }
                 });
             } else if (product === "development") {
                 getRandomDevelopment(G, ctx, ctx.currentPlayer);
@@ -82,7 +94,7 @@ export function getResourcesOfSettlement(G, settlement) {
         if (!sameCoords(hex, G.robber)
             && G.hexes[hex[0]] !== undefined
             && G.hexes[hex[0]][hex[1]] !== undefined) {
-                
+
             let type = G.hexes[hex[0]][hex[1]].type;
             let number = G.hexes[hex[0]][hex[1]].number;
             if (type !== "desert" && type !== "ocean" && number !== undefined) {
