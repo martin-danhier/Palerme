@@ -1,5 +1,5 @@
 import React from 'react';
-import { HexGrid, Layout, Hexagon } from 'react-hexgrid';
+import { HexGrid, Layout, Hexagon, Text } from 'react-hexgrid';
 import Pattern from 'react-hexgrid/lib/Pattern';
 import './board.css';
 
@@ -7,7 +7,7 @@ const zoomDragStep = 5;
 const zoomStep = 1;
 
 const zoomMin = 5;
-const zoomMax = 25;
+const zoomMax = 15;
 
 export class PalermeBoard extends React.Component {
 
@@ -84,9 +84,7 @@ export class PalermeBoard extends React.Component {
 
     render() {
         return (
-            <div style={{
-                display: "inline-block"
-            }}
+            <div className="gameWindow"
                 onMouseUp={this.handleMouseUp}
                 onMouseDown={this.handleMouseDown}
                 onMouseMove={this.handleDrag}
@@ -105,7 +103,19 @@ export class PalermeBoard extends React.Component {
                         flat={true}>
                         {Object.entries(this.props.G.hexes).map(
                             (value) => Object.entries(value[1]).map(
-                                (hex) => <Hexagon key={hex[0]} q={parseInt(value[0])} r={parseInt(hex[0])} s={0} fill={hex[1].type} />
+                                (hex) => <Hexagon
+                                    key={hex[0]}
+                                    q={parseInt(value[0])}
+                                    r={parseInt(hex[0])}
+                                    s={-5}
+                                    fill={hex[1].type}
+                                    children={
+                                        <div>
+
+                                            <text textAnchor="middle">Circle Text</text>
+                                            <circle cx="5" cy="5" r="4" fill="none" stroke="#F0CE01" strokeWidth="4" />
+                                        </div>
+                                    } />
                             )
                         )}
                     </Layout>
@@ -114,6 +124,7 @@ export class PalermeBoard extends React.Component {
                     <Pattern id="mountains" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_mountains.png?raw=true" size={this.state.size} />
                     <Pattern id="hills" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_hills_2.png?raw=true" size={this.state.size} />
                     <Pattern id="meadow" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_meadow.png?raw=true" size={this.state.size} />
+                    <Pattern id="desert" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_desert.png?raw=true" size={this.state.size} />
                 </HexGrid>
             </div>
         );
