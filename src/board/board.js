@@ -109,16 +109,10 @@ export class PalermeBoard extends React.Component {
                             )
                         )}
                     </Layout>
-                    <defs>
-                        <pattern id={"forest"} patternUnits="objectBoundingBox" x={0} y={0} width={this.state.size.x} height={this.state.size.y}>
-                            <image
-                                xlinkHref={"https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_forest.png?raw=true"}
-                                x={0} y={0} width={this.state.size.x * 2} height={this.state.size.y * 2} />
-                        </pattern>
-                    </defs>
                     <Pattern id="forest" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_forest.png?raw=true" size={this.state.size} />
                     <Pattern id="field" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_field.png?raw=true" size={this.state.size} />
                     <Pattern id="mountains" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_mountains.png?raw=true" size={this.state.size} />
+                    <Pattern id="hills" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_hills.png?raw=true" size={this.state.size} />
                     <Pattern id="meadow" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_meadow.png?raw=true" size={this.state.size} />
                 </HexGrid>
             </div>
