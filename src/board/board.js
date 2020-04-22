@@ -113,9 +113,10 @@ export class PalermeBoard extends React.Component {
                         <pattern id={"forest"} patternUnits="objectBoundingBox" x={0} y={0} width={this.state.size.x} height={this.state.size.y}>
                             <image 
                             xlinkHref={"https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_forest.png?raw=true"} 
-                            x={0} y={0} width={this.state.size.x * 2} height={this.state.size.y * 2} />
+                            x={0} y={0}  width={this.state.size.x * 2} height={this.state.size.y * 2}/>
                         </pattern>
                     </defs>
+                    <Pattern id="forest" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_forest.png?raw=true" size={this.state.size} />
                 </HexGrid>
             </div>
         );
