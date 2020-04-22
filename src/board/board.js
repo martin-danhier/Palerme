@@ -1,5 +1,7 @@
 import React from 'react';
 import { HexGrid, Layout, Hexagon } from 'react-hexgrid';
+import Pattern from 'react-hexgrid/lib/Pattern';
+import './board.css';
 
 const zoomDragStep = 5;
 const zoomStep = 1;
@@ -103,10 +105,11 @@ export class PalermeBoard extends React.Component {
                         flat={false}>
                         {Object.entries(this.props.G.hexes).map(
                             (value) => Object.entries(value[1]).map(
-                                (hex) => <Hexagon key={hex[0]} q={parseInt(value[0])} r={parseInt(hex[0])} s={0} />
+                                (hex) => <Hexagon key={hex[0]} q={parseInt(value[0])} r={parseInt(hex[0])} s={0} fill={hex[1].type === 'forest' ? hex[1].type : undefined} />
                             )
                         )}
                     </Layout>
+                    <Pattern id="forest" link="file:forest.png" size={this.state.size}  />
                 </HexGrid>
             </div>
         );
