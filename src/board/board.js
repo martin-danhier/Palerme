@@ -98,25 +98,27 @@ export class PalermeBoard extends React.Component {
                     height={this.props.dimensions.height - 6}
                 >
                     <Layout
-
+                        spacing={0.992}
                         className="board"
                         origin={this.state.origin}
                         size={this.state.size}
                         flat={true}>
                         {Object.entries(this.props.G.hexes).map(
                             (value) => Object.entries(value[1]).map(
-                                (hex) => <Hexagon key={hex[0]} q={parseInt(value[0])} r={parseInt(hex[0])} s={0} fill={hex[1].type === 'forest' ? hex[1].type : undefined} />
+                                (hex) => <Hexagon key={hex[0]} q={parseInt(value[0])} r={parseInt(hex[0])} s={0} fill={hex[1].type} />
                             )
                         )}
                     </Layout>
                     <defs>
                         <pattern id={"forest"} patternUnits="objectBoundingBox" x={0} y={0} width={this.state.size.x} height={this.state.size.y}>
-                            <image 
-                            xlinkHref={"https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_forest.png?raw=true"} 
-                            x={0} y={0}  width={this.state.size.x * 2} height={this.state.size.y * 2}/>
+                            <image
+                                xlinkHref={"https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_forest.png?raw=true"}
+                                x={0} y={0} width={this.state.size.x * 2} height={this.state.size.y * 2} />
                         </pattern>
                     </defs>
                     <Pattern id="forest" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_forest.png?raw=true" size={this.state.size} />
+                    <Pattern id="field" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_field.png?raw=true" size={this.state.size} />
+                    <Pattern id="mountains" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_mountains.png?raw=true" size={this.state.size} />
                 </HexGrid>
             </div>
         );
