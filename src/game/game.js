@@ -26,7 +26,7 @@ import {
 // setup G
 function setup(ctx) {
   // Load map scaffold
-  let data = require('./default_state.json');
+  let data = require('./state_big_map.json');
 
   // Load player name
   let name = Cookies.get('playerName');

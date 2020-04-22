@@ -12,7 +12,7 @@ const MyClient = Client({
     multiplayer: SocketIO({server: 'localhost:8000'}),
 });
 
-const MainContent = () => (
-    <MyClient playerID="0" />
+const MainContent = (props) => (
+    <MyClient playerID="0" {...props}/>
 )
 export default MainContent;
