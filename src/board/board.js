@@ -102,14 +102,14 @@ export class PalermeBoard extends React.Component {
                         className="board"
                         origin={this.state.origin}
                         size={this.state.size}
-                        flat={false}>
+                        flat={true}>
                         {Object.entries(this.props.G.hexes).map(
                             (value) => Object.entries(value[1]).map(
                                 (hex) => <Hexagon key={hex[0]} q={parseInt(value[0])} r={parseInt(hex[0])} s={0} fill={hex[1].type === 'forest' ? hex[1].type : undefined} />
                             )
                         )}
                     </Layout>
-                    <Pattern id="forest" link="file:forest.png" size={this.state.size}  />
+                    <Pattern id="forest" link="https://raw.githubusercontent.com/martin-danhier/Palerme/master/public/resources/forest.png" size={this.state.size}  />
                 </HexGrid>
             </div>
         );
