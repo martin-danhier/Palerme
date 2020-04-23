@@ -1,5 +1,9 @@
 import Cookies from 'js-cookie';
-import { placeRoad, placeTown, placeSettlement } from './placement';
+import { 
+  placeRoad, 
+  placeTown, 
+  placeSettlement,
+  getRoadData } from './placement';
 import { TurnOrder } from 'boardgame.io/core';
 import {
   buy,
@@ -62,6 +66,12 @@ function setup(ctx) {
         resources: ["wood", "clay", "stone", "stone"]
       }
     };
+  }
+
+  for (let road of data.roads) {
+    if (road.data === undefined) {
+      road.data = getRoadData(data, road.hexes);
+    }
   }
 
   return data;

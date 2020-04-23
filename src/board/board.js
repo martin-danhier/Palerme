@@ -1,7 +1,8 @@
 import React from 'react';
-import { HexGrid, Layout, Hexagon, Text } from 'react-hexgrid';
+import { HexGrid, Layout, Hexagon } from 'react-hexgrid';
 import Pattern from 'react-hexgrid/lib/Pattern';
 import './board.css';
+import { isCoordInArray, sameCoords } from '../game/hexes';
 
 const zoomDragStep = 5;
 const zoomStep = 1;
@@ -82,6 +83,147 @@ export class PalermeBoard extends React.Component {
         this.setState(newState);
     }
 
+    getNumberFontSize(number) {
+        let size = this.state.size.x / 4;
+        // 2 or 12
+        if ([2, 12].includes(number)) {
+            return this.state.size.x / 5.5;
+        }
+        // 3 or 11
+        else if ([3, 11].includes(number)) {
+            return this.state.size.x / 4.8
+        }
+        // 4 or 10
+        else if ([4, 10].includes(number)) {
+            return this.state.size.x / 3.5
+        }
+        // 5 or 9
+        else if ([5, 9].includes(number)) {
+            return this.state.size.x / 3
+        }
+        // 6 or 8
+        else if ([6, 8].includes(number)) {
+            return this.state.size.x / 2.5
+        }
+        return size;
+    }
+
+    getNumberFontColor(number) {
+        if ([6, 8].includes(number)) {
+            return "#ff0000";
+        }
+        else {
+            return "#000000"
+        }
+    }
+
+    /**
+     * 
+     * @param {{data: {type: 'a' | 'b' | 'c', AVertex: number[][], BVertex: number[][]}, player: string, hexes: number[][]}} road 
+     */
+    generateRoad(road, i, coords) {
+        let transform;
+        let x = 0;
+        let y = 0;
+        let color = "";
+
+        let tileTopLeft = sameCoords(road.hexes[0], coords);
+
+        if (road.data.type === "a") {
+            transform = "";
+            x = -4 * this.state.size.x / 10;
+            if (tileTopLeft) {
+                y = 8.1 * this.state.size.y / 10;
+            }
+            else {
+                y = - 9.1 * this.state.size.y / 10;
+            }
+        }
+        else if (road.data.type === "b") {
+            transform = "rotate(60)"
+            if (tileTopLeft) {
+                x = -4 * this.state.size.y / 10
+                y =  -9.1 * this.state.size.y / 10;
+            }
+            else {
+                x = -4 * this.state.size.y / 10
+                y =  8.1 * this.state.size.y / 10;
+            }
+        }
+        else {
+            transform = "rotate(-60)"
+            if (tileTopLeft) {
+                x = -4 * this.state.size.y / 10
+                y =  8.1 * this.state.size.y / 10;
+            }
+            else {
+                x = -4 * this.state.size.y / 10
+                y =  -9.1 * this.state.size.y / 10;
+            }
+        }
+
+        if (road.player === "0") color = "blue";
+        else color = "red"
+
+        return <rect
+            x={x}
+            y={y}
+            rx={this.state.size.x / 20}
+            width={this.state.size.x / 1.2}
+            height={this.state.size.x / 9.5}
+            transform={transform}
+            style={{
+                fill: color
+            }}
+            key={`road${i}`}
+        />
+    }
+
+    /**
+     * Generate the children for this hexagon
+     * @param {{number?: number, type: string}} hex 
+     */
+    getChildren(hex, coords) {
+        let children = [];
+
+        // Circle with number on it
+        if (hex.number !== undefined) {
+            // Add a circle
+            children.push(<circle
+                key="circle"
+                cx="0"
+                cy="0"
+                r={this.state.size.x / 5}
+                fill="#fff7cc"
+                strokeWidth="0.1" />
+            );
+            // Put the number on it
+            children.push(<text
+                x={0}
+                y='0.35em'
+                key="number"
+                textAnchor="middle"
+                style={{
+                    fontSize: this.getNumberFontSize(hex.number),
+                    fill: this.getNumberFontColor(hex.number),
+                    fontWeight: "bold",
+                    fontFamily: "serif",
+                    letterSpacing: this.state.size.x / 200
+                }}>
+                {hex.number}
+            </text>);
+        }
+
+        let i = 0;
+        for (let road of this.props.G.roads) {
+            if (isCoordInArray(coords, road.hexes)) {
+                children.push(this.generateRoad(road, i++, coords));
+            }
+        }
+
+        return children;
+    }
+
     render() {
         return (
             <div className="gameWindow"
@@ -107,15 +249,9 @@ export class PalermeBoard extends React.Component {
                                     key={hex[0]}
                                     q={parseInt(value[0])}
                                     r={parseInt(hex[0])}
-                                    s={-5}
+                                    s={0}
                                     fill={hex[1].type}
-                                    children={
-                                        <div>
-
-                                            <text textAnchor="middle">Circle Text</text>
-                                            <circle cx="5" cy="5" r="4" fill="none" stroke="#F0CE01" strokeWidth="4" />
-                                        </div>
-                                    } />
+                                    children={this.getChildren(hex[1], [parseInt(value[0]), parseInt(hex[0])])} />
                             )
                         )}
                     </Layout>
