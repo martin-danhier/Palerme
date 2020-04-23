@@ -3,6 +3,7 @@ import { HexGrid, Layout, Hexagon } from 'react-hexgrid';
 import Pattern from 'react-hexgrid/lib/Pattern';
 import './board.css';
 import { isCoordInArray, sameCoords, indexOfCoord } from '../game/hexes';
+import { getRoadData } from '../game/placement';
 
 const zoomDragStep = 5;
 const zoomStep = 1;
@@ -169,7 +170,7 @@ export class PalermeBoard extends React.Component {
                 stroke="white"
                 strokeWidth={this.state.size.x / 50}
                 fill={color}
-                key={`settle${i}`}/>
+                key={`settle${i}`} />
         }
         else {
             return <rect
@@ -181,175 +182,215 @@ export class PalermeBoard extends React.Component {
                 strokeWidth={this.state.size.x / 50}
                 fill={color}
                 key={`settle${i}`}
+            />
+        }
+    }
+
+    /**
+     * 
+     * @param {{data: {type: 'a' | 'b' | 'c', AVertex: number[][], BVertex: number[][]}, player: string, hexes: number[][]}} road 
+     */
+    generateRoad(road, i, coords) {
+        let transform;
+        let x = 0;
+        let y = 0;
+        let color = "";
+
+        let tileTopLeft = sameCoords(road.hexes[0], coords);
+
+        if (road.data.type === "a") {
+            transform = "";
+            x = -4 * this.state.size.x / 10;
+            if (tileTopLeft) {
+                y = 8.1 * this.state.size.y / 10;
+            }
+            else {
+                y = - 9.1 * this.state.size.y / 10;
+            }
+        }
+        else if (road.data.type === "b") {
+            transform = "rotate(60)"
+            if (tileTopLeft) {
+                x = -4 * this.state.size.y / 10
+                y = -9.1 * this.state.size.y / 10;
+            }
+            else {
+                x = -4 * this.state.size.y / 10
+                y = 8.1 * this.state.size.y / 10;
+            }
+        }
+        else {
+            transform = "rotate(-60)"
+            if (tileTopLeft) {
+                x = -4 * this.state.size.y / 10
+                y = 8.1 * this.state.size.y / 10;
+            }
+            else {
+                x = -4 * this.state.size.y / 10
+                y = -9.1 * this.state.size.y / 10;
+            }
+        }
+
+        if (road.player === "0") color = "blue";
+        else color = "red"
+
+        return <rect
+            x={x}
+            y={y}
+            rx={this.state.size.x / 20}
+            width={this.state.size.x / 1.2}
+            height={this.state.size.x / 9.5}
+            transform={transform}
+            style={{
+                fill: color
+            }}
+            key={`road${i}`}
         />
     }
-}
 
-/**
- * 
- * @param {{data: {type: 'a' | 'b' | 'c', AVertex: number[][], BVertex: number[][]}, player: string, hexes: number[][]}} road 
- */
-generateRoad(road, i, coords) {
-    let transform;
-    let x = 0;
-    let y = 0;
-    let color = "";
+    generateHarbors(harbor, i, coords) {
+        let transform;
+        let x = -5 * this.state.size.y / 10
+        let y = 7.1 * this.state.size.y / 10;
 
-    let tileTopLeft = sameCoords(road.hexes[0], coords);
+        let tileTopLeft = sameCoords(harbor.hexes[0], coords);
+        let data = getRoadData(harbor.hexes)
 
-    if (road.data.type === "a") {
-        transform = "";
-        x = -4 * this.state.size.x / 10;
-        if (tileTopLeft) {
-            y = 8.1 * this.state.size.y / 10;
+        if (data.type === "a" && !tileTopLeft) {
+            transform = "rotate(180)";
         }
-        else {
-            y = - 9.1 * this.state.size.y / 10;
+        else if (data.type === "b") {
+            if (tileTopLeft) {
+                transform = "rotate(240)"
+            }
+            else {
+                transform = "rotate(60)"
+            }
         }
-    }
-    else if (road.data.type === "b") {
-        transform = "rotate(60)"
-        if (tileTopLeft) {
-            x = -4 * this.state.size.y / 10
-            y = -9.1 * this.state.size.y / 10;
+        else if (data.type === "c") {
+            if (tileTopLeft) {
+                transform = "rotate(-60)"
+            }
+            else {
+                transform = "rotate(-240)"
+            }
         }
-        else {
-            x = -4 * this.state.size.y / 10
-            y = 8.1 * this.state.size.y / 10;
-        }
-    }
-    else {
-        transform = "rotate(-60)"
-        if (tileTopLeft) {
-            x = -4 * this.state.size.y / 10
-            y = 8.1 * this.state.size.y / 10;
-        }
-        else {
-            x = -4 * this.state.size.y / 10
-            y = -9.1 * this.state.size.y / 10;
-        }
-    }
 
-    if (road.player === "0") color = "blue";
-    else color = "red"
-
-    return <rect
-        x={x}
-        y={y}
-        rx={this.state.size.x / 20}
-        width={this.state.size.x / 1.2}
-        height={this.state.size.x / 9.5}
-        transform={transform}
-        style={{
-            fill: color
-        }}
-        key={`road${i}`}
-    />
-}
-
-generateHarbors(harbor, coords){
-
-}
-
-/**
- * Generate the children for this hexagon
- * @param {{number?: number, type: string}} hex 
- */
-getChildren(hex, coords) {
-    let children = [];
-
-    // Circle with number on it
-    if (hex.number !== undefined) {
-        // Add a circle
-        children.push(<circle
-            key="circle"
-            cx="0"
-            cy="0"
-            r={this.state.size.x / 5}
-            fill="#fff7cc"
-            strokeWidth="0.1" />
-        );
-        // Put the number on it
-        children.push(<text
-            x={0}
-            y='0.35em'
-            key="number"
-            textAnchor="middle"
-            style={{
-                fontSize: this.getNumberFontSize(hex.number),
-                fill: this.getNumberFontColor(hex.number),
-                fontWeight: "bold",
-                fontFamily: "serif",
-                letterSpacing: this.state.size.x / 200
-            }}>
-            {hex.number}
-        </text>);
-    }
-
-    if (sameCoords(coords, this.props.G.robber)) {
-        children.push(<image
-            x={- 0.45 * this.state.size.x}
-            y={- 0.6 * this.state.size.y}
+        return <image
+            key={`harbor${i}`}
+            transform={transform}
+            x={x}
+            y={y}
             width={this.state.size.x}
-            height={this.state.size.y}
-            xlinkHref="https://github.com/martin-danhier/Palerme/blob/master/public/resources/robber.png?raw=true" />)
+            height={this.state.size.y} xlinkHref="https://github.com/martin-danhier/Palerme/blob/master/public/resources/harbor_31.png?raw=true" />
     }
 
-    let i = 0;
-    for (let road of this.props.G.roads) {
-        if (isCoordInArray(coords, road.hexes)) {
-            children.push(this.generateRoad(road, i++, coords));
+    /**
+     * Generate the children for this hexagon
+     * @param {{number?: number, type: string}} hex 
+     */
+    getChildren(hex, coords) {
+        let children = [];
+
+        // Circle with number on it
+        if (hex.number !== undefined) {
+            // Add a circle
+            children.push(<circle
+                key="circle"
+                cx="0"
+                cy="0"
+                r={this.state.size.x / 5}
+                fill="#fff7cc"
+                strokeWidth="0.1" />
+            );
+            // Put the number on it
+            children.push(<text
+                x={0}
+                y='0.35em'
+                key="number"
+                textAnchor="middle"
+                style={{
+                    fontSize: this.getNumberFontSize(hex.number),
+                    fill: this.getNumberFontColor(hex.number),
+                    fontWeight: "bold",
+                    fontFamily: "serif",
+                    letterSpacing: this.state.size.x / 200
+                }}>
+                {hex.number}
+            </text>);
         }
-    }
 
-    for (let settlement of this.props.G.settlements) {
-        if (isCoordInArray(coords, settlement.hexes)) {
-            children.push(this.generateSettlement(settlement, i++, coords));
+        if (sameCoords(coords, this.props.G.robber)) {
+            children.push(<image
+                x={- 0.45 * this.state.size.x}
+                y={- 0.6 * this.state.size.y}
+                width={this.state.size.x}
+                height={this.state.size.y}
+                xlinkHref="https://github.com/martin-danhier/Palerme/blob/master/public/resources/robber.png?raw=true" />)
         }
+
+        let i = 0;
+
+        for (let harbor of this.props.G.harbors) {
+            if (isCoordInArray(coords, harbor.hexes)) {
+                children.push(this.generateHarbors(harbor, i++, coords));
+            }
+        }
+
+        for (let road of this.props.G.roads) {
+            if (isCoordInArray(coords, road.hexes)) {
+                children.push(this.generateRoad(road, i++, coords));
+            }
+        }
+
+        for (let settlement of this.props.G.settlements) {
+            if (isCoordInArray(coords, settlement.hexes)) {
+                children.push(this.generateSettlement(settlement, i++, coords));
+            }
+        }
+
+        return children;
     }
 
-    return children;
-}
+    render() {
+        return (
+            <div className="gameWindow"
+                onMouseUp={this.handleMouseUp}
+                onMouseDown={this.handleMouseDown}
+                onMouseMove={this.handleDrag}
+                onWheel={this.handleZoom}>
 
-render() {
-    return (
-        <div className="gameWindow"
-            onMouseUp={this.handleMouseUp}
-            onMouseDown={this.handleMouseDown}
-            onMouseMove={this.handleDrag}
-            onWheel={this.handleZoom}>
-
-            {/* width={812} height={770}*/}
-            <HexGrid
-                width={this.props.dimensions.width - 6}
-                height={this.props.dimensions.height - 6}
-            >
-                <Layout
-                    spacing={0.992}
-                    className="board"
-                    origin={this.state.origin}
-                    size={this.state.size}
-                    flat={true}>
-                    {Object.entries(this.props.G.hexes).map(
-                        (value) => Object.entries(value[1]).map(
-                            (hex) => <Hexagon
-                                key={hex[0]}
-                                q={parseInt(value[0])}
-                                r={parseInt(hex[0])}
-                                s={0}
-                                fill={hex[1].type}
-                                children={this.getChildren(hex[1], [parseInt(value[0]), parseInt(hex[0])])} />
-                        )
-                    )}
-                </Layout>
-                <Pattern id="forest" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_forest.png?raw=true" size={this.state.size} />
-                <Pattern id="field" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_field.png?raw=true" size={this.state.size} />
-                <Pattern id="mountains" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_mountains.png?raw=true" size={this.state.size} />
-                <Pattern id="hills" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_hills_2.png?raw=true" size={this.state.size} />
-                <Pattern id="meadow" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_meadow.png?raw=true" size={this.state.size} />
-                <Pattern id="desert" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_desert.png?raw=true" size={this.state.size} />
-            </HexGrid>
-        </div>
-    );
-}
+                {/* width={812} height={770}*/}
+                <HexGrid
+                    width={this.props.dimensions.width - 6}
+                    height={this.props.dimensions.height - 6}
+                >
+                    <Layout
+                        spacing={0.992}
+                        className="board"
+                        origin={this.state.origin}
+                        size={this.state.size}
+                        flat={true}>
+                        {Object.entries(this.props.G.hexes).map(
+                            (value) => Object.entries(value[1]).map(
+                                (hex) => <Hexagon
+                                    key={hex[0]}
+                                    q={parseInt(value[0])}
+                                    r={parseInt(hex[0])}
+                                    s={0}
+                                    fill={hex[1].type}
+                                    children={this.getChildren(hex[1], [parseInt(value[0]), parseInt(hex[0])])} />
+                            )
+                        )}
+                    </Layout>
+                    <Pattern id="forest" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_forest.png?raw=true" size={this.state.size} />
+                    <Pattern id="field" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_field.png?raw=true" size={this.state.size} />
+                    <Pattern id="mountains" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_mountains.png?raw=true" size={this.state.size} />
+                    <Pattern id="hills" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_hills_2.png?raw=true" size={this.state.size} />
+                    <Pattern id="meadow" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_meadow.png?raw=true" size={this.state.size} />
+                    <Pattern id="desert" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_desert.png?raw=true" size={this.state.size} />
+                </HexGrid>
+            </div>
+        );
+    }
 }

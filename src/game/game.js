@@ -70,7 +70,7 @@ function setup(ctx) {
 
   for (let road of data.roads) {
     if (road.data === undefined) {
-      road.data = getRoadData(data, road.hexes);
+      road.data = getRoadData(road.hexes);
     }
   }
 

@@ -16,7 +16,7 @@ export function placeRoad(G, ctx, coords) {
         G.roads.push({
             player: ctx.currentPlayer,
             hexes: coords,
-            data: getRoadData(G, coords),
+            data: getRoadData(coords),
         });
         
         checkLongestRoadAward(G, ctx);
@@ -24,7 +24,7 @@ export function placeRoad(G, ctx, coords) {
     }
 }
 
-export function getRoadData(G, hexes) {
+export function getRoadData(hexes) {
     // substract the coords. 
     // Since the coords are sorted in hexes and we always substract by the smaller, 
     // there are only 3 possible results: (0,1), (1,0) and (1,-1)
