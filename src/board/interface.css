@@ -1,0 +1,33 @@
+
+.root {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow: hidden;
+    
+  }
+
+.gridList {
+    flex-wrap: nowrap;
+    /* Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS. */
+    transform: translateZ(0);
+}
+
+.bottomZone {
+    background-image: url(resources/wood.jpg);
+    border-top: solid #966900;
+    overflow: hidden;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    z-index: 0;
+}   
+
+img {
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

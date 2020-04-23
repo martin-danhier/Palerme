@@ -2,6 +2,7 @@
     display: inline-block;
     background: url(water.jpg);
     background-size: 8cm;
+    overflow: hidden;
 }
 
 

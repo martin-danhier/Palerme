@@ -19,7 +19,7 @@ export class PalermeBoard extends React.Component {
         this.state = {
             isDragging: false,
             size: { x: 10, y: 10 },
-            origin: { x: -62, y: -35 },
+            origin: { x: -50, y: -60 },
         }
 
         console.log(props.G);
@@ -276,13 +276,23 @@ export class PalermeBoard extends React.Component {
             }
         }
 
+        // Create URL
+        let url;
+        if (harbor.type === "3:1") {
+            url = "https://github.com/martin-danhier/Palerme/blob/master/public/resources/harbor_31.png?raw=true";
+        }
+        else {
+            url = `https://github.com/martin-danhier/Palerme/blob/master/public/resources/harbor_${harbor.type}.png?raw=true`
+        }
+
+
         return <image
             key={`harbor${i}`}
             transform={transform}
             x={x}
             y={y}
             width={this.state.size.x}
-            height={this.state.size.y} xlinkHref="https://github.com/martin-danhier/Palerme/blob/master/public/resources/harbor_31.png?raw=true" />
+            height={this.state.size.y} xlinkHref={url} />
     }
 
     /**
@@ -322,6 +332,7 @@ export class PalermeBoard extends React.Component {
 
         if (sameCoords(coords, this.props.G.robber)) {
             children.push(<image
+                key="robber"
                 x={- 0.45 * this.state.size.x}
                 y={- 0.6 * this.state.size.y}
                 width={this.state.size.x}
@@ -362,8 +373,8 @@ export class PalermeBoard extends React.Component {
 
                 {/* width={812} height={770}*/}
                 <HexGrid
-                    width={this.props.dimensions.width - 6}
-                    height={this.props.dimensions.height - 6}
+                    width={this.props.dimensions.width}
+                    height={this.props.dimensions.height - 20}
                 >
                     <Layout
                         spacing={0.992}
