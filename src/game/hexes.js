@@ -8,6 +8,15 @@ export function* moveAround(data, r, l) {
     yield [r - 1, r];
 }
 
+export function indexOfCoord(array, coords){
+    for (let i = 0; i < array.length; i++){
+        if (sameCoords(array[i], coords)){
+            return i;
+        }
+    }
+    return -1;
+}
+
 export function addHex(data, r, l, type, number) {
     // create the hex
     let hex = { type }

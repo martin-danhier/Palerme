@@ -10,3 +10,12 @@
     font-weight: bold;
     font-family: sans-serif;
 }
+
+/* prevent selection */
+svg text {
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    }

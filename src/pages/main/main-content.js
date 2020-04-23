@@ -9,7 +9,7 @@ const MyClient = Client({
     board: PalermeBoard,
     playerID: 0,
     debug: true,
-    multiplayer: SocketIO({server: 'localhost:8000'}),
+    multiplayer: SocketIO({server: '192.168.1.207:8000'}),
 });
 
 const MainContent = (props) => (
