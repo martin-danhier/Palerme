@@ -1,9 +1,10 @@
 import Cookies from 'js-cookie';
-import { 
-  placeRoad, 
-  placeTown, 
+import {
+  placeRoad,
+  placeTown,
   placeSettlement,
-  getRoadData } from './placement';
+  getRoadData
+} from './placement';
 import { TurnOrder } from 'boardgame.io/core';
 import {
   buy,
@@ -42,6 +43,7 @@ function setup(ctx) {
   for (let i = 0; i < ctx.numPlayers; i++) {
     data.players[i] = {
       name,
+      color: '#ffffff',
       score: 0,
       knights: 0,
       deck: {
@@ -89,6 +91,7 @@ function makePlayerView(G, playerID) {
         clone.otherPlayers[other] = {
           name: G.players[other].name,
           score: G.players[other].score,
+          color: G.players[other].color,
           knights: G.players[other].knights,
           deck: {
             developments: G.players[other].deck.developments.length,
@@ -232,6 +235,33 @@ export const PalermeGame = {
   endIf: isVictory,
   playerView: (G, ctx, playerID) => makePlayerView(G, playerID),
   phases: {
+    register: {
+      next: 'placement',
+      start: true,
+      onBegin: (G, ctx) => {
+        // Set the player on the placeSettlement stage
+        ctx.events.setActivePlayers({
+          currentPlayer: "register",
+          others: "register",
+          moveLimit: 1,
+        });
+      },
+      endIf: (G, ctx) => ctx.activePlayers === null && ctx.numMoves > 0,
+      turn: {
+        stages: {
+          register: {
+            moves: {
+              chooseColor: {
+                move: (G, ctx, color) => {
+                  G.players[ctx.playerID].color = color;
+                },
+                client: false,
+              }
+            }
+          }
+        }
+      }
+    },
     placement: {
       next: 'main',
       turn: {
@@ -293,7 +323,6 @@ export const PalermeGame = {
       }
     },
     main: {
-      start: true,
       turn: {
         order: TurnOrder.RESET,
         onBegin: (G, ctx) => {

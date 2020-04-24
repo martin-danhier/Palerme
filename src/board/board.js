@@ -73,15 +73,19 @@ export class PalermeBoard extends React.Component {
     }
 
     handleMouseDown = (event) => {
-        let newState = Object.assign({}, this.state);
-        newState.isDragging = true;
-        this.setState(newState);
+        if (!this.state.isDragging) {
+            let newState = Object.assign({}, this.state);
+            newState.isDragging = true;
+            this.setState(newState);
+        }
     }
 
     handleMouseUp = (event) => {
-        let newState = Object.assign({}, this.state);
-        newState.isDragging = false;
-        this.setState(newState);
+        if (this.state.isDragging) {
+            let newState = Object.assign({}, this.state);
+            newState.isDragging = false;
+            this.setState(newState);
+        }
     }
 
     getNumberFontSize(number) {
@@ -118,21 +122,26 @@ export class PalermeBoard extends React.Component {
         }
     }
 
+    getPlayerColor(player)  {
+        if (player === this.props.playerID) {
+            return this.props.G.currentPlayer.color;
+        }
+        else {
+            return this.props.G.otherPlayers[player].color;
+        }
+    }
+
     /**
      * 
      * @param {{player: string, hexes: number[][], level: number}} settlement 
      * @param {number} i 
      * @param {number[]} coords 
      */
-    generateSettlement(settlement, i, coords) {
+    generateSettlement = (settlement, i, coords) => {
 
-        let color = "";
         let cx = 0;
         let cy = 0;
         let position = indexOfCoord(settlement.hexes, coords);
-
-        if (settlement.player === "0") color = "blue";
-        else color = "red"
 
         // Vertex of type B
         if (settlement.hexes[0][0] === settlement.hexes[1][0]) {
@@ -169,7 +178,7 @@ export class PalermeBoard extends React.Component {
                 r={this.state.size.x / 6}
                 stroke="white"
                 strokeWidth={this.state.size.x / 50}
-                fill={color}
+                fill={this.getPlayerColor(settlement.player)}
                 key={`settle${i}`} />
         }
         else {
@@ -180,7 +189,7 @@ export class PalermeBoard extends React.Component {
                 height={this.state.size.x / 3}
                 stroke="white"
                 strokeWidth={this.state.size.x / 50}
-                fill={color}
+                fill={this.getPlayerColor(settlement.player)}
                 key={`settle${i}`}
             />
         }
@@ -194,7 +203,6 @@ export class PalermeBoard extends React.Component {
         let transform;
         let x = 0;
         let y = 0;
-        let color = "";
 
         let tileTopLeft = sameCoords(road.hexes[0], coords);
 
@@ -231,8 +239,6 @@ export class PalermeBoard extends React.Component {
             }
         }
 
-        if (road.player === "0") color = "blue";
-        else color = "red"
 
         return <rect
             x={x}
@@ -242,7 +248,7 @@ export class PalermeBoard extends React.Component {
             height={this.state.size.x / 9.5}
             transform={transform}
             style={{
-                fill: color
+                fill: this.getPlayerColor(road.player)
             }}
             key={`road${i}`}
         />
@@ -369,6 +375,7 @@ export class PalermeBoard extends React.Component {
                 onMouseUp={this.handleMouseUp}
                 onMouseDown={this.handleMouseDown}
                 onMouseMove={this.handleDrag}
+                onMouseLeave={this.handleMouseUp}
                 onWheel={this.handleZoom}>
 
                 {/* width={812} height={770}*/}

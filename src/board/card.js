@@ -37,7 +37,7 @@ export class GameCard extends React.Component {
     }
 
     render() {
-        return <img draggable="false" width="125px" src={this.chooseImage()} alt={this.props.type ?? "Ressource inconnue"}
+        return <img style={{margin: 3}} draggable="false" width="125px" src={this.chooseImage()} alt={this.props.type ?? "Ressource inconnue"}
 
         />
     }

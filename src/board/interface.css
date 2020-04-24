@@ -1,17 +1,25 @@
-
 .root {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     overflow: hidden;
-    
-  }
+}
 
 .gridList {
     flex-wrap: nowrap;
     /* Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS. */
     transform: translateZ(0);
 }
+
+img {
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/** Bottom zone */
 
 .bottomZone {
     background-image: url(resources/wood.jpg);
@@ -22,12 +30,101 @@
     right: 0;
     position: absolute;
     z-index: 0;
-}   
+    display: flex;
+    flex-direction: row;
+}
 
-img {
+.inventory {
+    flex-grow: 3;
+    justify-content: center;
+    display: inline-flex;
+    flex-direction: row;
+    margin-left: 10px;
+    margin-top: 4px;
+    margin-right: 10px;
+    overflow: auto;
+}
+
+.buttons {
+    border-left: solid #d18451;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.leftButtons {
+    border-right: solid #d18451;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+/** Right panel */
+
+.rightPanel {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 20em;
+    background-color: #2a2a2add;
+}
+
+.playerInfo {
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    color: #fdfdfd;
+    border-bottom: solid 1px #dfddd8;
+    /* background-color: grey; */
     cursor: default;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+.playerInfo .title {
+    display: flex;
+    width: 100%;
+    /* justify-content: space-between; */
+    flex: auto 1 1;
+}
+
+.playerInfo .title .first {
+    flex-grow: 1;
+}
+
+.playerInfo .title .counter {
+    margin-left: 10px;
+    margin-right: 10px;
+    flex-wrap: wrap;
+    vertical-align: baseline;
+}
+
+/* Scroll bar */
+
+/* width */
+
+::-webkit-scrollbar {
+    width: 14px;
+}
+
+/* Track */
+
+::-webkit-scrollbar-track {
+    background: #5e4726ee;
+}
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+    background: rgb(226, 163, 46);
+}
+
+/* Handle on hover */
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(253, 211, 95);
 }
