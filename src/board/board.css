@@ -5,18 +5,33 @@
     overflow: hidden;
 }
 
-
 .circleNumber {
     font-size: 0.2em;
     font-weight: bold;
+    stroke: unset;
     font-family: sans-serif;
 }
 
+.numberText {
+    stroke-width: 0;
+}
+
 /* prevent selection */
+
 svg text {
     cursor: default;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    }
+}
+
+.hoverable:hover {
+    /* fill: #83838323; */
+    fill-opacity: 0.7;
+}
+
+.selected {
+    stroke: white;
+    stroke-width: 0.8px;
+}

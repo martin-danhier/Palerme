@@ -2,7 +2,7 @@ import React from 'react';
 import { HexGrid, Layout, Hexagon } from 'react-hexgrid';
 import Pattern from 'react-hexgrid/lib/Pattern';
 import './board.css';
-import { isCoordInArray, sameCoords, indexOfCoord } from '../game/hexes';
+import { isCoordInArray, sameCoords, indexOfCoord, areHexesAdjacent, sortCoords } from '../game/hexes';
 import { getRoadData } from '../game/placement';
 import { getPlayerColor } from './utils';
 
@@ -21,6 +21,7 @@ export class PalermeBoard extends React.Component {
             isDragging: false,
             size: { x: 10, y: 10 },
             origin: { x: -50, y: -60 },
+            selected: []
         }
 
         console.log(props.G);
@@ -89,7 +90,7 @@ export class PalermeBoard extends React.Component {
         }
     }
 
-    getNumberFontSize(number) {
+    getNumberFontSize =(number) => {
         let size = this.state.size.x / 4;
         // 2 or 12
         if ([2, 12].includes(number)) {
@@ -125,11 +126,56 @@ export class PalermeBoard extends React.Component {
 
     /**
      * 
+     * @param {MouseEvent} event 
+     * @param {number[][]} coords 
+     */
+    handleHexClick = (event, coords) => {
+        if (this.props.ctx.activePlayers[this.props.playerID] === 'placeSettlement') {
+            let newState = Object.assign({}, this.state)
+            let index = indexOfCoord(this.state.selected, coords);
+            if (index > -1) {
+                newState.selected.splice(index, 1);
+            } else {
+                let adj = [];
+                for (let h of this.state.selected) {
+                    adj.push(areHexesAdjacent(coords, h));
+                }
+
+                console.log(adj)
+                if (adj.length === 0 || adj.every((value) => value === true)) {
+                    newState.selected.push(coords);
+                    sortCoords(newState.selected);
+                }
+                else {
+                    newState.selected = [];
+                    for (let i = 0; i < this.state.selected.length; i++) {
+                        if (adj[i] === true) {
+                            newState.selected.push(Array.from(this.state.selected[i]));
+                        }
+                    }
+                    newState.selected.push(coords);
+                    sortCoords(newState.selected);
+                }
+            }
+            this.setState(newState);
+            console.log(JSON.stringify(newState.selected))
+            this.props.onSelect(newState.selected);
+        }
+    }
+
+    clearSelection(){
+        let newState = Object.assign({}, this.state);
+        newState.selected = [];
+        this.setState(newState);
+    }
+
+    /**
+     * 
      * @param {{player: string, hexes: number[][], level: number}} settlement 
      * @param {number} i 
      * @param {number[]} coords 
      */
-    generateSettlement = (settlement, i, coords) => {
+    generateSettlement = (settlement, i, coords, notPlaced) => {
 
         let cx = 0;
         let cy = 0;
@@ -168,7 +214,7 @@ export class PalermeBoard extends React.Component {
                 cx={cx}
                 cy={cy}
                 r={this.state.size.x / 6}
-                stroke="white"
+                stroke={notPlaced? "#51ff00" : "white"}
                 strokeWidth={this.state.size.x / 50}
                 fill={getPlayerColor(this.props.G, settlement.player, this.props.playerID)}
                 key={`settle${i}`} />
@@ -186,6 +232,7 @@ export class PalermeBoard extends React.Component {
             />
         }
     }
+
 
     /**
      * 
@@ -311,7 +358,8 @@ export class PalermeBoard extends React.Component {
                 cy="0"
                 r={this.state.size.x / 5}
                 fill="#fff7cc"
-                strokeWidth="0.1" />
+                strokeWidth="0.1"
+                stroke="#555" />
             );
             // Put the number on it
             children.push(<text
@@ -319,9 +367,11 @@ export class PalermeBoard extends React.Component {
                 y='0.35em'
                 key="number"
                 textAnchor="middle"
+                className="numberText"
                 style={{
                     fontSize: this.getNumberFontSize(hex.number),
                     fill: this.getNumberFontColor(hex.number),
+                    border: "unset",
                     fontWeight: "bold",
                     fontFamily: "serif",
                     letterSpacing: this.state.size.x / 200
@@ -360,8 +410,31 @@ export class PalermeBoard extends React.Component {
             }
         }
 
+        // place settlement
+        if (this.props.ctx.activePlayers[this.props.playerID] === 'placeSettlement' && isCoordInArray(coords, this.state.selected)) {
+            if (this.state.selected.length === 3) {
+                children.push(this.generateSettlement({ hexes: this.state.selected, player: this.props.playerID, level: 1 }, i++, coords, true));
+            }
+            // TODO borders
+            // else if (this.state.selected.length === 2) {
+            //     // find if ocean
+            //     let ocean = rotationClockwise(this.state.selected[1], this.state.selected[0]);
+            //     // if not an ocean
+            //     if (this.props.G.hexes[`${ocean[0]}`] !== undefined && this.props.G.hexes[`${ocean[0]}`][`${ocean[1]}`] !== undefined) {
+            //         ocean = rotationCounterClockwise(this.state.selected[1], this.state.selected[0]);
+            //     }
+
+            //     if (this.props.G.hexes[`${ocean[0]}`] === undefined || this.props.G.hexes[`${ocean[0]}`][`${ocean[1]}`] === undefined) {
+
+            //         children.push(this.generateSettlement({ hexes: sortCoords([this.state.selected[0], this.state.selected[1], ocean]), player: this.props.playerID, level: 1 }, i++, coords));
+            //     }
+            // }
+        }
+
         return children;
     }
+
+
 
     render() {
         return (
@@ -384,16 +457,35 @@ export class PalermeBoard extends React.Component {
                         size={this.state.size}
                         flat={true}>
                         {Object.entries(this.props.G.hexes).map(
-                            (value) => Object.entries(value[1]).map(
+                            (value) => Object.entries(value[1]).filter((hex) => {
+                                return !isCoordInArray([parseInt(value[0]), parseInt(hex[0])], this.state.selected);
+                            }).map(
                                 (hex) => <Hexagon
                                     key={hex[0]}
+                                    className={['placeSettlement'].includes(this.props.ctx.activePlayers[this.props.playerID]) ? 'hoverable' : ''}
                                     q={parseInt(value[0])}
                                     r={parseInt(hex[0])}
                                     s={0}
+                                    onClick={(event) => this.handleHexClick(event, [parseInt(value[0]), parseInt(hex[0])])}
                                     fill={hex[1].type}
                                     children={this.getChildren(hex[1], [parseInt(value[0]), parseInt(hex[0])])} />
                             )
                         )}
+                        {
+                            this.state.selected.map((coord) => {
+                                let hex = this.props.G.hexes[`${coord[0]}`][`${coord[1]}`];
+                                return <Hexagon
+                                    key={`${coord[0]} ${coord[1]}`}
+                                    q={coord[0]}
+                                    r={coord[1]}
+                                    s={0}
+                                    className={"selected hoverable"}
+                                    style={{ strokeWidth: this.state.size.x / 20 }}
+                                    onClick={(event) => this.handleHexClick(event, coord)}
+                                    fill={hex.type}
+                                    children={this.getChildren(hex, coord)} />
+                            })
+                        }
                     </Layout>
                     <Pattern id="forest" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_forest.png?raw=true" size={this.state.size} />
                     <Pattern id="field" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_field.png?raw=true" size={this.state.size} />

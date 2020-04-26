@@ -253,8 +253,8 @@ export const PalermeGame = {
             moves: {
               chooseColor: {
                 move: (G, ctx, color) => {
-                  for (let player of Object.keys(G.players)){
-                    if (G.players[player].color === color){
+                  for (let player of Object.keys(G.players)) {
+                    if (G.players[player].color === color) {
                       return INVALID_MOVE;
                     }
                   }
@@ -273,11 +273,15 @@ export const PalermeGame = {
       turn: {
         stages: {
           placeSettlement: {
-            moves: { placeSettlement },
-            next: 'placeRoad'
+            next: 'placeRoad',
+            moves: {
+              placeSettlement: { move: placeSettlement, client: false },
+            },
           },
           placeRoad: {
-            moves: { placeRoad }
+            moves: {
+              placeRoad: { move: placeRoad, client: false },
+            },
           },
         },
         onBegin: (G, ctx) => {
@@ -326,7 +330,7 @@ export const PalermeGame = {
             return order;
           }
         }
-      }
+      },
     },
     main: {
       turn: {

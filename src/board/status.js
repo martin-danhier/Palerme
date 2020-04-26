@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography } from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
 import { getPlayerName, getPlayerColor } from './utils';
 
 import './status.css';
@@ -30,7 +30,13 @@ export class StatusBar extends React.Component {
         else return ['', 'Aucune action.'];
     }
 
-
+    /**
+     * Handles the click on the button
+     * @param {MouseEvent} event 
+     */
+    handleButtonClick = (event) => {
+        this.props.onClick(event);
+    }
 
     render() {
         let message = this.getMessage();
@@ -39,14 +45,25 @@ export class StatusBar extends React.Component {
             {(message[0] !== '') ?
                 <Typography
                     variant="h6"
-                    style={{ color: getPlayerColor(this.props.G, message[0], this.props.playerID), marginRight:6}}>
+                    style={{ color: getPlayerColor(this.props.G, message[0], this.props.playerID), marginRight: 6 }}>
                     {getPlayerName(this.props.G, this.props.ctx.currentPlayer, this.props.playerID)}
                 </Typography>
                 : undefined
             }
             <Typography variant="h6">
-            {message[1]}
+                {message[1]}
             </Typography>
+            <Button
+                hidden="true"
+                className={['placeSettlement'].includes(this.props.ctx.activePlayers[this.props.playerID]) ?
+                    "button" :
+                    "hidden"}
+                variant="outlined"
+
+                color="inherit"
+                onClick={this.handleButtonClick}>
+                OK
+            </Button>
         </div>;
     }
 }

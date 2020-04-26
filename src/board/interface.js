@@ -12,6 +12,15 @@ import { StatusBar } from './status';
  */
 export class PalermeInterface extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+        this.boardRef = React.createRef();
+
+        this.state = {
+            selected: []
+        }
+    }
 
     generatePlayers() {
         let list = [];
@@ -47,17 +56,34 @@ export class PalermeInterface extends React.Component {
         return list;
     }
 
+    handleOKButtonClicked = (event) => {
+        if (this.state.selected.length === 3 && this.props.ctx.activePlayers[this.props.playerID] === 'placeSettlement') {
+            this.props.moves.placeSettlement(this.state.selected)
+            this.boardRef.current.clearSelection();
+            
+            let newState = Object.assign({}, this.state);
+            newState.selected = [];
+            this.setState(newState);
+        }
+    }
+
+    onBoardSelect = (data) => {
+        let newState = Object.assign({}, this.state);
+        newState.selected = data;
+        this.setState(newState);
+    }
+
     render() {
         console.log(this.props.ctx.activePlayers[this.props.playerID])
         return <div>
 
             {/* Status bar */}
-            <StatusBar {...this.props} />
+            <StatusBar {...this.props} onClick={this.handleOKButtonClicked} />
 
             {/** Color selector */}
             <ColorPickerDialog open={this.props.ctx.activePlayers[this.props.playerID] === 'register'} moves={this.props.moves} />
 
-            <PalermeBoard {...this.props} />
+            <PalermeBoard ref={this.boardRef} onSelect={this.onBoardSelect} {...this.props} />
 
             <div className="rightPanel">
                 {this.generatePlayers()}

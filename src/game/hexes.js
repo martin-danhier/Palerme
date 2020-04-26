@@ -200,3 +200,13 @@ export function areEdgesAdjacents(edge1, edge2) {
         return false;
     }
 }
+
+/**
+ * Compares two hexes to see if they are adjacents
+ * @param {number[]} hex1 
+ * @param {number[]} hex2 
+ */
+export function areHexesAdjacent(hex1, hex2) {
+    let sub = substractCoords(hex1, hex2);
+    return isCoordInArray(sub, [[0,1],[1,0],[0,-1],[-1,0],[1,-1],[-1,1]]);
+}

@@ -10,3 +10,11 @@
     color: #eeedeb;
     margin-right: 20em;
 }
+
+.button {
+    margin-left: 20px !important;
+}
+
+.hidden {
+    visibility: hidden;
+}
