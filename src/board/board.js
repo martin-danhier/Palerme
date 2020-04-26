@@ -4,6 +4,7 @@ import Pattern from 'react-hexgrid/lib/Pattern';
 import './board.css';
 import { isCoordInArray, sameCoords, indexOfCoord } from '../game/hexes';
 import { getRoadData } from '../game/placement';
+import { getPlayerColor } from './utils';
 
 const zoomDragStep = 5;
 const zoomStep = 1;
@@ -122,15 +123,6 @@ export class PalermeBoard extends React.Component {
         }
     }
 
-    getPlayerColor(player)  {
-        if (player === this.props.playerID) {
-            return this.props.G.currentPlayer.color;
-        }
-        else {
-            return this.props.G.otherPlayers[player].color;
-        }
-    }
-
     /**
      * 
      * @param {{player: string, hexes: number[][], level: number}} settlement 
@@ -178,7 +170,7 @@ export class PalermeBoard extends React.Component {
                 r={this.state.size.x / 6}
                 stroke="white"
                 strokeWidth={this.state.size.x / 50}
-                fill={this.getPlayerColor(settlement.player)}
+                fill={getPlayerColor(this.props.G, settlement.player, this.props.playerID)}
                 key={`settle${i}`} />
         }
         else {
@@ -189,7 +181,7 @@ export class PalermeBoard extends React.Component {
                 height={this.state.size.x / 3}
                 stroke="white"
                 strokeWidth={this.state.size.x / 50}
-                fill={this.getPlayerColor(settlement.player)}
+                fill={getPlayerColor(this.props.G, settlement.player, this.props.playerID)}
                 key={`settle${i}`}
             />
         }
@@ -247,8 +239,10 @@ export class PalermeBoard extends React.Component {
             width={this.state.size.x / 1.2}
             height={this.state.size.x / 9.5}
             transform={transform}
+            stroke={'#ffffff'}
+            strokeWidth={this.state.size.x / 80}
             style={{
-                fill: this.getPlayerColor(road.player)
+                fill: getPlayerColor(this.props.G, road.player, this.props.playerID)
             }}
             key={`road${i}`}
         />

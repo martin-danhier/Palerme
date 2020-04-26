@@ -1,9 +1,11 @@
 import React from 'react';
 import { PalermeBoard } from './board';
-import { Grid, Typography, Card } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
+import ColorPickerDialog from './colorPicker';
 import { GameCard } from './card';
 
 import './interface.css';
+import { StatusBar } from './status';
 
 /**
  * @extends React.Component<{G : {currentPlayer: {deck:{resources: string[]}}}, otherPlayers: [{name: string, deck: {resources: number, developments: number}, knights: number, score: number}] }>
@@ -32,8 +34,8 @@ export class PalermeInterface extends React.Component {
                 info.developments = this.props.G.otherPlayers[`${i}`].deck.developments;
             }
             list.push(<div key={`player${i}`} className="playerInfo">
-                <div className="title"> 
-                    <Typography variant="h6" className="first" style={{color: info.color}}>{`${info.name}`}</Typography>
+                <div className="title">
+                    <Typography variant="h6" className="first" style={{ color: info.color }}>{`${info.name}`}</Typography>
                     <Typography noWrap className="counter">{`★ ${info.score}`}</Typography>
                     <Typography noWrap className="counter">{`⚔ ${info.knights}`}</Typography>
                 </div>
@@ -46,7 +48,14 @@ export class PalermeInterface extends React.Component {
     }
 
     render() {
+        console.log(this.props.ctx.activePlayers[this.props.playerID])
         return <div>
+
+            {/* Status bar */}
+            <StatusBar {...this.props} />
+
+            {/** Color selector */}
+            <ColorPickerDialog open={this.props.ctx.activePlayers[this.props.playerID] === 'register'} moves={this.props.moves} />
 
             <PalermeBoard {...this.props} />
 

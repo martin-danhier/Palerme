@@ -5,7 +5,7 @@ import {
   placeSettlement,
   getRoadData
 } from './placement';
-import { TurnOrder } from 'boardgame.io/core';
+import { TurnOrder, INVALID_MOVE } from 'boardgame.io/core';
 import {
   buy,
   tradeWithHarbors,
@@ -253,6 +253,12 @@ export const PalermeGame = {
             moves: {
               chooseColor: {
                 move: (G, ctx, color) => {
+                  for (let player of Object.keys(G.players)){
+                    if (G.players[player].color === color){
+                      return INVALID_MOVE;
+                    }
+                  }
+
                   G.players[ctx.playerID].color = color;
                 },
                 client: false,

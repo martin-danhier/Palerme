@@ -67,7 +67,7 @@ img {
     top: 0;
     bottom: 0;
     width: 20em;
-    background-color: #2a2a2add;
+    background-color: #1b1b1bdd;
 }
 
 .playerInfo {
@@ -127,4 +127,11 @@ img {
 
 ::-webkit-scrollbar-thumb:hover {
     background: rgb(253, 211, 95);
+}
+
+/** Backdrops */
+
+.backdrop {
+    z-index: 2 !important;
+    color: '#fff';
 }

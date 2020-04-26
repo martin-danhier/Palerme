@@ -12,6 +12,7 @@
     "esm": "^3.2.25",
     "js-cookie": "^2.2.1",
     "react": "^16.13.1",
+    "react-color": "^2.18.0",
     "react-dom": "^16.13.1",
     "react-draggable": "^4.3.1",
     "react-hexgrid": "^1.0.3",

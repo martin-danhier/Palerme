@@ -1,4 +1,5 @@
 import { playerHasHarbor, sameCoords } from './hexes';
+import { INVALID_MOVE } from 'boardgame.io/core';
 
 
 export const prices = require('./prices.json');
@@ -48,7 +49,7 @@ export function buy(G, ctx, product) {
     else {
         console.error("Invalid product.");
     }
-    return undefined;
+    return INVALID_MOVE;
 }
 
 export function hasEnoughResources(G, player, resources) {
@@ -211,12 +212,12 @@ export function makeTradeOffer(G, ctx, toPlayer, fromCards, toCards) {
     let player = ctx.playerID;
 
     if (toPlayer === player) {
-        return undefined;
+        return INVALID_MOVE;
     }
 
     // Only the current player can propose to anyone
     if (ctx.activePlayers[player] === "tradeOnly" && toPlayer !== ctx.currentPlayer) {
-        return undefined;
+        return INVALID_MOVE;
     }
 
 
@@ -237,7 +238,7 @@ export function acceptTradeOffer(G, ctx, tradeID) {
 
     // to accept a trade, a player must be the one concerned
     if (G.trade[tradeID] === undefined || G.trade[tradeID].to !== player) {
-        return undefined;
+        return INVALID_MOVE;
     }
 
     if (hasEnoughResources(G, player, G.trade[tradeID].toCards)) {
@@ -260,7 +261,7 @@ export function updateTradeOffer(G, ctx, tradeID, fromCards, toCards) {
     let player = ctx.playerID;
     // to update a trade, a player must be the one concerned
     if (G.trade[tradeID] === undefined || G.trade[tradeID].from !== player) {
-        return undefined;
+        return INVALID_MOVE;
     }
 
     if (hasEnoughResources(G, player, fromCards)) {
@@ -278,7 +279,7 @@ export function makeTradeCounterOffer(G, ctx, tradeID, fromCards, toCards) {
     let player = ctx.playerID;
     // to update a trade, a player must be the one concerned
     if (G.trade[tradeID] === undefined || G.trade[tradeID].to !== player) {
-        return undefined;
+        return INVALID_MOVE;
     }
 
 
@@ -299,7 +300,7 @@ export function cancelTradeOffer(G, ctx, tradeID) {
 
     // to cancel a trade, a player must be the one concerned
     if (G.trade[tradeID] === undefined || (G.trade[tradeID].to !== player && G.trade[tradeID].from !== player)) {
-        return undefined;
+        return INVALID_MOVE;
     }
 
     delete G.trade[tradeID];

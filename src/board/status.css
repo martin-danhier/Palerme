@@ -1,0 +1,12 @@
+.statusbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+    background-color: #252525dd;
+    color: #eeedeb;
+    margin-right: 20em;
+}
