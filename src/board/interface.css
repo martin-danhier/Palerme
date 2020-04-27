@@ -35,7 +35,7 @@ img {
 }
 
 .inventory {
-    flex-grow: 3;
+    flex-grow: 5;
     justify-content: center;
     display: inline-flex;
     flex-direction: row;
@@ -45,12 +45,42 @@ img {
     overflow: auto;
 }
 
-.buttons {
+.dices {
     border-left: solid #d18451;
-    flex-grow: 1;
+    border-right: solid transparent;
     display: flex;
+    padding: 20px;
+    vertical-align: middle;
+    justify-content: center;
     flex-direction: column;
 }
+
+.action {
+    animation: glow 1s ease-in-out infinite alternate;
+}
+
+.action:hover {
+    border: solid #f6fdd8;
+    background-color: #ffffff41;
+    cursor: pointer;
+}
+
+.action .die {
+    cursor: pointer;
+}
+
+/* Animation */
+
+@keyframes glow {
+    from {
+        border: solid #eedf5c;
+    }
+    to {
+        border: solid #ffffff;
+    }
+}
+
+/* ---- */
 
 .leftButtons {
     border-right: solid #d18451;

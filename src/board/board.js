@@ -90,7 +90,7 @@ export class PalermeBoard extends React.Component {
         }
     }
 
-    getNumberFontSize =(number) => {
+    getNumberFontSize = (number) => {
         let size = this.state.size.x / 4;
         // 2 or 12
         if ([2, 12].includes(number)) {
@@ -130,40 +130,65 @@ export class PalermeBoard extends React.Component {
      * @param {number[][]} coords 
      */
     handleHexClick = (event, coords) => {
-        if (this.props.ctx.activePlayers[this.props.playerID] === 'placeSettlement') {
+        let playerStage = this.props.ctx.activePlayers[this.props.playerID];
+        if (['placeSettlement', 'placeRoad'].includes(playerStage)) {
             let newState = Object.assign({}, this.state)
             let index = indexOfCoord(this.state.selected, coords);
             if (index > -1) {
                 newState.selected.splice(index, 1);
-            } else {
+            }
+            else {
                 let adj = [];
                 for (let h of this.state.selected) {
                     adj.push(areHexesAdjacent(coords, h));
                 }
 
-                console.log(adj)
-                if (adj.length === 0 || adj.every((value) => value === true)) {
-                    newState.selected.push(coords);
-                    sortCoords(newState.selected);
-                }
-                else {
-                    newState.selected = [];
-                    for (let i = 0; i < this.state.selected.length; i++) {
-                        if (adj[i] === true) {
-                            newState.selected.push(Array.from(this.state.selected[i]));
-                        }
+                // Road : max 2 tiles
+                if (playerStage === 'placeRoad') {
+                    if (adj.length === 0 || (adj.length === 1 && adj[0] === true)) {
+                        newState.selected.push(coords);
+                        sortCoords(newState.selected);
                     }
-                    newState.selected.push(coords);
-                    sortCoords(newState.selected);
+                    else if (adj.every((value) => value === false) || adj.every((value) => value === true)) {
+                        newState.selected = [coords];
+                    }
+                    else {
+                        // One adjacent, not the other
+                        newState.selected = [];
+                        for (let i = 0; i < this.state.selected.length; i++) {
+                            if (adj[i] === true) {
+                                newState.selected.push(Array.from(this.state.selected[i]));
+                            }
+                        }
+                        newState.selected.push(coords);
+                        sortCoords(newState.selected);
+                    }
                 }
+                // Settlement : 3 tiles
+                else if (playerStage === 'placeSettlement') {
+                    if (adj.length === 0 || adj.every((value) => value === true)) {
+                        newState.selected.push(coords);
+                        sortCoords(newState.selected);
+                    }
+                    else {
+                        newState.selected = [];
+                        for (let i = 0; i < this.state.selected.length; i++) {
+                            if (adj[i] === true) {
+                                newState.selected.push(Array.from(this.state.selected[i]));
+                            }
+                        }
+                        newState.selected.push(coords);
+                        sortCoords(newState.selected);
+                    }
+                }
+
             }
             this.setState(newState);
-            console.log(JSON.stringify(newState.selected))
             this.props.onSelect(newState.selected);
         }
     }
 
-    clearSelection(){
+    clearSelection() {
         let newState = Object.assign({}, this.state);
         newState.selected = [];
         this.setState(newState);
@@ -214,8 +239,9 @@ export class PalermeBoard extends React.Component {
                 cx={cx}
                 cy={cy}
                 r={this.state.size.x / 6}
-                stroke={notPlaced? "#51ff00" : "white"}
+                stroke={notPlaced ? "#51ff00" : "white"}
                 strokeWidth={this.state.size.x / 50}
+                fillOpacity={notPlaced ? 0 : 1}
                 fill={getPlayerColor(this.props.G, settlement.player, this.props.playerID)}
                 key={`settle${i}`} />
         }
@@ -238,7 +264,7 @@ export class PalermeBoard extends React.Component {
      * 
      * @param {{data: {type: 'a' | 'b' | 'c', AVertex: number[][], BVertex: number[][]}, player: string, hexes: number[][]}} road 
      */
-    generateRoad(road, i, coords) {
+    generateRoad(road, i, coords, notPlaced) {
         let transform;
         let x = 0;
         let y = 0;
@@ -286,7 +312,7 @@ export class PalermeBoard extends React.Component {
             width={this.state.size.x / 1.2}
             height={this.state.size.x / 9.5}
             transform={transform}
-            stroke={'#ffffff'}
+            stroke={notPlaced ? "#51ff00" : "white"}
             strokeWidth={this.state.size.x / 80}
             style={{
                 fill: getPlayerColor(this.props.G, road.player, this.props.playerID)
@@ -298,28 +324,28 @@ export class PalermeBoard extends React.Component {
     generateHarbors(harbor, i, coords) {
         let transform;
         let x = -5 * this.state.size.y / 10
-        let y = 7.1 * this.state.size.y / 10;
+        let y = -9.9 * this.state.size.y / 10;
 
         let tileTopLeft = sameCoords(harbor.hexes[0], coords);
         let data = getRoadData(harbor.hexes)
 
-        if (data.type === "a" && !tileTopLeft) {
+        if (data.type === "a" && tileTopLeft) {
             transform = "rotate(180)";
         }
         else if (data.type === "b") {
             if (tileTopLeft) {
-                transform = "rotate(240)"
+                transform = "rotate(60)"
             }
             else {
-                transform = "rotate(60)"
+                transform = "rotate(240)"
             }
         }
         else if (data.type === "c") {
             if (tileTopLeft) {
-                transform = "rotate(-60)"
+                transform = "rotate(-240)"
             }
             else {
-                transform = "rotate(-240)"
+                transform = "rotate(-60)"
             }
         }
 
@@ -348,6 +374,8 @@ export class PalermeBoard extends React.Component {
      */
     getChildren(hex, coords) {
         let children = [];
+        
+        let playerStage = this.props.ctx.activePlayers[this.props.playerID];
 
         // Circle with number on it
         if (hex.number !== undefined) {
@@ -393,7 +421,7 @@ export class PalermeBoard extends React.Component {
         let i = 0;
 
         for (let harbor of this.props.G.harbors) {
-            if (isCoordInArray(coords, harbor.hexes)) {
+            if (hex.type === 'ocean' && isCoordInArray(coords, harbor.hexes)) {
                 children.push(this.generateHarbors(harbor, i++, coords));
             }
         }
@@ -404,6 +432,14 @@ export class PalermeBoard extends React.Component {
             }
         }
 
+        if (playerStage === 'placeRoad' && this.state.selected.length === 2 && isCoordInArray(coords, this.state.selected)) {
+            children.push(this.generateRoad({
+                hexes: this.state.selected,
+                player: this.props.playerID,
+                data: getRoadData(this.state.selected)
+            }, i++, coords, true));
+        }
+
         for (let settlement of this.props.G.settlements) {
             if (isCoordInArray(coords, settlement.hexes)) {
                 children.push(this.generateSettlement(settlement, i++, coords));
@@ -411,25 +447,18 @@ export class PalermeBoard extends React.Component {
         }
 
         // place settlement
-        if (this.props.ctx.activePlayers[this.props.playerID] === 'placeSettlement' && isCoordInArray(coords, this.state.selected)) {
-            if (this.state.selected.length === 3) {
-                children.push(this.generateSettlement({ hexes: this.state.selected, player: this.props.playerID, level: 1 }, i++, coords, true));
-            }
-            // TODO borders
-            // else if (this.state.selected.length === 2) {
-            //     // find if ocean
-            //     let ocean = rotationClockwise(this.state.selected[1], this.state.selected[0]);
-            //     // if not an ocean
-            //     if (this.props.G.hexes[`${ocean[0]}`] !== undefined && this.props.G.hexes[`${ocean[0]}`][`${ocean[1]}`] !== undefined) {
-            //         ocean = rotationCounterClockwise(this.state.selected[1], this.state.selected[0]);
-            //     }
+        if (playerStage === 'placeSettlement' && this.state.selected.length === 3 && isCoordInArray(coords, this.state.selected)) {
 
-            //     if (this.props.G.hexes[`${ocean[0]}`] === undefined || this.props.G.hexes[`${ocean[0]}`][`${ocean[1]}`] === undefined) {
+            children.push(this.generateSettlement({
+                hexes: this.state.selected,
+                player: this.props.playerID,
+                level: 1
+            }, i++, coords, true));
 
-            //         children.push(this.generateSettlement({ hexes: sortCoords([this.state.selected[0], this.state.selected[1], ocean]), player: this.props.playerID, level: 1 }, i++, coords));
-            //     }
-            // }
         }
+
+       
+
 
         return children;
     }
@@ -460,16 +489,20 @@ export class PalermeBoard extends React.Component {
                             (value) => Object.entries(value[1]).filter((hex) => {
                                 return !isCoordInArray([parseInt(value[0]), parseInt(hex[0])], this.state.selected);
                             }).map(
-                                (hex) => <Hexagon
-                                    key={hex[0]}
-                                    className={['placeSettlement'].includes(this.props.ctx.activePlayers[this.props.playerID]) ? 'hoverable' : ''}
-                                    q={parseInt(value[0])}
-                                    r={parseInt(hex[0])}
-                                    s={0}
-                                    onClick={(event) => this.handleHexClick(event, [parseInt(value[0]), parseInt(hex[0])])}
-                                    fill={hex[1].type}
-                                    children={this.getChildren(hex[1], [parseInt(value[0]), parseInt(hex[0])])} />
-                            )
+                                (hex) => {
+                                    let hoverable = ['placeSettlement', 'placeRoad'].includes(this.props.ctx.activePlayers[this.props.playerID]);
+                                    return <Hexagon
+                                        key={hex[0]}
+                                        className={hex[1].type === 'ocean' ?
+                                            (hoverable ? 'ocean hoverable' : 'ocean')
+                                            : (hoverable ? 'hoverable' : '')}
+                                        q={parseInt(value[0])}
+                                        r={parseInt(hex[0])}
+                                        s={0}
+                                        onClick={(event) => this.handleHexClick(event, [parseInt(value[0]), parseInt(hex[0])])}
+                                        fill={hex[1].type === 'ocean' ? undefined : hex[1].type}
+                                        children={this.getChildren(hex[1], [parseInt(value[0]), parseInt(hex[0])])} />
+                                })
                         )}
                         {
                             this.state.selected.map((coord) => {
@@ -479,10 +512,10 @@ export class PalermeBoard extends React.Component {
                                     q={coord[0]}
                                     r={coord[1]}
                                     s={0}
-                                    className={"selected hoverable"}
+                                    className={hex.type === 'ocean' ? "ocean selected hoverable" : "selected hoverable"}
                                     style={{ strokeWidth: this.state.size.x / 20 }}
                                     onClick={(event) => this.handleHexClick(event, coord)}
-                                    fill={hex.type}
+                                    fill={hex.type === 'ocean' ? undefined : hex.type}
                                     children={this.getChildren(hex, coord)} />
                             })
                         }

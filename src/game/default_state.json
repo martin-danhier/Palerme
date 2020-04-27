@@ -1,146 +1,288 @@
 {
-    "dices" : null,
-    "players" : {},
-    "roads" : [],
-    "settlements" : [],
-    "robber": [2,2],
-    "awards" : {
-        "longestRoad" : null,
-        "mostPowerfulArmy" : null
+    "dices": [1,1],
+    "players": {},
+    "roads": [],
+    "settlements": [],
+    "robber": [
+        2,
+        2
+    ],
+    "awards": {
+        "longestRoad": null,
+        "mostPowerfulArmy": null
     },
-    "trade" : {},
-    "tradeCounter" : 0,
+    "trade": {},
+    "tradeCounter": 0,
     "hexes": {
-        "0" : {
-            "2" : {
-                "type": "meadow",
-                "number" : 8
+        "-1": {
+            "2": {
+                "type": "ocean"
             },
-             "3" : {
-                "type": "forest",
-                "number" : 10
+            "3": {
+                "type": "ocean"
             },
-            "4" : {
-                "type": "field",
-                "number" : 9
+            "4": {
+                "type": "ocean"
+            },
+            "5": {
+                "type": "ocean"
             }
         },
-        "1" : {
-            "1" : {
+        "0": {
+            "1": {
+                "type": "ocean"
+            },
+            "2": {
                 "type": "meadow",
-                "number" : 3
+                "number": 8
             },
-            "2" : {
+            "3": {
+                "type": "forest",
+                "number": 10
+            },
+            "4": {
                 "type": "field",
-                "number" : 5
+                "number": 9
             },
-            "3" : {
+            "5": {
+                "type": "ocean"
+            }
+        },
+        "1": {
+            "0": {
+                "type": "ocean"
+            },
+            "1": {
+                "type": "meadow",
+                "number": 3
+            },
+            "2": {
+                "type": "field",
+                "number": 5
+            },
+            "3": {
                 "type": "mountains",
-                "number" : 6
+                "number": 6
             },
-            "4" : {
+            "4": {
                 "type": "meadow",
                 "number": 12
+            },
+            "5": {
+                "type": "ocean"
             }
         },
-        "2" : {
-            "0" : {
+        "2": {
+            "-1": {
+                "type": "ocean"
+            },
+            "0": {
                 "type": "forest",
-                "number" : 6
+                "number": 6
             },
-            "1" : {
+            "1": {
                 "type": "mountains",
-                "number" : 4
+                "number": 4
             },
-            "2" : {
+            "2": {
                 "type": "desert"
             },
-            "3" : {
+            "3": {
                 "type": "forest",
-                "number" : 3
+                "number": 3
             },
-            "4" : {
+            "4": {
                 "type": "hills",
-                "number" : 11
+                "number": 11
+            },
+            "5": {
+                "type": "ocean"
             }
         },
-        "3" : {
-            "0" : {
+        "3": {
+            "-1": {
+                "type": "ocean"
+            },
+            "0": {
                 "type": "field",
-                "number" : 2
+                "number": 2
             },
-            "1" : {
+            "1": {
                 "type": "hills",
-                "number" : 9
+                "number": 9
             },
-            "2" : {
+            "2": {
                 "type": "mountains",
-                "number" : 11
+                "number": 11
             },
-            "3" : {
+            "3": {
                 "type": "meadow",
                 "number": 4
+            },
+            "4": {
+                "type": "ocean"
             }
         },
-        "4" : {
-            "0" : {
-                "type": "forest",
-                "number" : 5
+        "4": {
+            "-1": {
+                "type": "ocean"
             },
-            "1" : {
+            "0": {
+                "type": "forest",
+                "number": 5
+            },
+            "1": {
                 "type": "field",
                 "number": 10
             },
-            "2" : {
+            "2": {
                 "type": "hills",
                 "number": 8
+            },
+            "3": {
+                "type": "ocean"
+            }
+        },
+        "5": {
+            "-1": {
+                "type": "ocean"
+            },
+            "0": {
+                "type": "ocean"
+            },
+            "1": {
+                "type": "ocean"
+            },
+            "2": {
+                "type": "ocean"
             }
         }
     },
-    "harbors" : [
+    "harbors": [
         {
-            "hexes": [[0,1], [1,1]],
-            "type" : "sheep"
+            "hexes": [
+                [
+                    0,
+                    1
+                ],
+                [
+                    1,
+                    1
+                ]
+            ],
+            "type": "sheep"
         },
         {
-            "hexes" : [[2,-1], [2,0]],
-            "type" : "3:1"
+            "hexes": [
+                [
+                    2,
+                    -1
+                ],
+                [
+                    2,
+                    0
+                ]
+            ],
+            "type": "3:1"
         },
         {
-            "hexes" : [[3,0],[4,-1]],
+            "hexes": [
+                [
+                    3,
+                    0
+                ],
+                [
+                    4,
+                    -1
+                ]
+            ],
             "type": "stone"
         },
         {
-            "hexes" : [[4,1],[5,0]],
+            "hexes": [
+                [
+                    4,
+                    1
+                ],
+                [
+                    5,
+                    0
+                ]
+            ],
             "type": "wheat"
         },
         {
-            "hexes" : [[4,2],[5,2]],
+            "hexes": [
+                [
+                    4,
+                    2
+                ],
+                [
+                    5,
+                    2
+                ]
+            ],
             "type": "3:1"
         },
         {
-            "hexes": [[3,3],[3,4]],
-            "type" : "wood"
+            "hexes": [
+                [
+                    3,
+                    3
+                ],
+                [
+                    3,
+                    4
+                ]
+            ],
+            "type": "wood"
         },
         {
-            "hexes": [[1,4],[1,5]],
+            "hexes": [
+                [
+                    1,
+                    4
+                ],
+                [
+                    1,
+                    5
+                ]
+            ],
             "type": "clay"
         },
         {
-            "hexes": [[-1,5],[0,4]],
+            "hexes": [
+                [
+                    -1,
+                    5
+                ],
+                [
+                    0,
+                    4
+                ]
+            ],
             "type": "3:1"
         },
         {
-            "hexes": [[-1,3],[0,3]],
+            "hexes": [
+                [
+                    -1,
+                    3
+                ],
+                [
+                    0,
+                    3
+                ]
+            ],
             "type": "3:1"
         }
     ],
-    "developmentsLeft" : {
+    "developmentsLeft": {
         "progress_resources": 3,
         "progress_roads": 3,
         "progress_monopoly": 3,
         "victory_point": 5,
         "knight": 20
     },
-    "victoryRequirement" : 3
+    "victoryRequirement": 3
 }

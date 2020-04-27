@@ -54,8 +54,8 @@ export class StatusBar extends React.Component {
                 {message[1]}
             </Typography>
             <Button
-                hidden="true"
-                className={['placeSettlement'].includes(this.props.ctx.activePlayers[this.props.playerID]) ?
+                hidden={true}
+                className={['placeSettlement', 'placeRoad'].includes(this.props.ctx.activePlayers[this.props.playerID]) ?
                     "button" :
                     "hidden"}
                 variant="outlined"
