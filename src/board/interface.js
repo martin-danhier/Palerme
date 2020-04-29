@@ -1,6 +1,6 @@
 import React from 'react';
 import { PalermeBoard } from './board';
-import { Grid, Typography } from '@material-ui/core';
+import { Button, Grid, Typography } from '@material-ui/core';
 import ColorPickerDialog from './colorPicker';
 import { GameCard } from './card';
 
@@ -124,7 +124,18 @@ export class PalermeInterface extends React.Component {
 
             <div className="bottomZone" >
                 <div className="leftButtons">
-                    <Typography>Autre texte</Typography>
+                    <Button
+                        hidden={!['idle','tradeOnly', 'mainStage'].includes(playerStage)}
+                        variant="outlined"
+                        onClick={() => this.props.moves.shuffleDeck()}>
+                        Mélanger les cartes
+                     </Button>
+                    <Button
+                        hidden={!['idle','tradeOnly', 'mainStage'].includes(playerStage)}
+                        variant="outlined"
+                        onClick={() => this.props.moves.sortDeck()}>
+                        Trier les cartes
+                    </Button>
                 </div>
                 <div className="inventory customScroll">
                     {this.props.G.currentPlayer.deck.resources.map((tile, index) => {
@@ -136,7 +147,7 @@ export class PalermeInterface extends React.Component {
 
                 {/* Dices */}
                 <div className={playerStage === 'rollDices' ? "dices action" : "dices"}
-                onClick={this.onDicesClicked}>
+                    onClick={this.onDicesClicked}>
                     <img className="die" alt="dice" width={50} style={{ margin: 5 }} src={Die[this.props.G.dices[0]]}></img>
                     <img className="die" alt="dice" width={50} style={{ margin: 5 }} src={Die[this.props.G.dices[1]]}></img>
                 </div>

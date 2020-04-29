@@ -74,8 +74,13 @@ export class PalermeBoard extends React.Component {
         }
     }
 
+    /**
+     * @param {MouseEvent} event
+     */
     handleMouseDown = (event) => {
-        if (!this.state.isDragging) {
+        if (!this.state.isDragging && event.button === 2) {
+            event.preventDefault();
+            event.stopPropagation();
             let newState = Object.assign({}, this.state);
             newState.isDragging = true;
             this.setState(newState);
@@ -83,7 +88,9 @@ export class PalermeBoard extends React.Component {
     }
 
     handleMouseUp = (event) => {
-        if (this.state.isDragging) {
+        if (this.state.isDragging && event.button === 2) {
+            event.preventDefault();
+            event.stopPropagation();
             let newState = Object.assign({}, this.state);
             newState.isDragging = false;
             this.setState(newState);
@@ -351,13 +358,25 @@ export class PalermeBoard extends React.Component {
 
         // Create URL
         let url;
-        if (harbor.type === "3:1") {
-            url = "https://github.com/martin-danhier/Palerme/blob/master/public/resources/harbor_31.png?raw=true";
+        switch(harbor.type) {
+            case "wood":
+                url = require('./resources/harbor_wood.png');
+                break;
+            case "clay":
+                url = require('./resources/harbor_clay.png')
+                break;
+            case "stone":
+                url = require('./resources/harbor_stone.png');
+                break;
+            case "wheat":
+                url = require('./resources/harbor_wheat.png');
+                break;
+            case "sheep":
+                url = require('./resources/harbor_sheep.png');
+                break;
+            default:
+                url = require('./resources/harbor_31.png');
         }
-        else {
-            url = `https://github.com/martin-danhier/Palerme/blob/master/public/resources/harbor_${harbor.type}.png?raw=true`
-        }
-
 
         return <image
             key={`harbor${i}`}
@@ -415,7 +434,7 @@ export class PalermeBoard extends React.Component {
                 y={- 0.6 * this.state.size.y}
                 width={this.state.size.x}
                 height={this.state.size.y}
-                xlinkHref="https://github.com/martin-danhier/Palerme/blob/master/public/resources/robber.png?raw=true" />)
+                xlinkHref={require('./resources/robber.png')} />)
         }
 
         let i = 0;
@@ -472,6 +491,7 @@ export class PalermeBoard extends React.Component {
                 onMouseDown={this.handleMouseDown}
                 onMouseMove={this.handleDrag}
                 onMouseLeave={this.handleMouseUp}
+                onContextMenu={(e) => {e.preventDefault()}}
                 onWheel={this.handleZoom}>
 
                 {/* width={812} height={770}*/}
@@ -520,12 +540,12 @@ export class PalermeBoard extends React.Component {
                             })
                         }
                     </Layout>
-                    <Pattern id="forest" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_forest.png?raw=true" size={this.state.size} />
-                    <Pattern id="field" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_field.png?raw=true" size={this.state.size} />
-                    <Pattern id="mountains" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_mountains.png?raw=true" size={this.state.size} />
-                    <Pattern id="hills" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_hills_2.png?raw=true" size={this.state.size} />
-                    <Pattern id="meadow" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_meadow.png?raw=true" size={this.state.size} />
-                    <Pattern id="desert" link="https://github.com/martin-danhier/Palerme/blob/master/public/resources/region_desert.png?raw=true" size={this.state.size} />
+                    <Pattern id="forest" link={require('./resources/region_forest.png')} size={this.state.size} />
+                    <Pattern id="field" link={require('./resources/region_field.png')} size={this.state.size} />
+                    <Pattern id="mountains" link={require('./resources/region_mountains.png')} size={this.state.size} />
+                    <Pattern id="hills" link={require('./resources/region_hills.png')} size={this.state.size} />
+                    <Pattern id="meadow" link={require('./resources/region_meadow.png')} size={this.state.size} />
+                    <Pattern id="desert" link={require('./resources/region_desert.png')} size={this.state.size} />
                 </HexGrid>
             </div>
         );
