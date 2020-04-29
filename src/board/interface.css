@@ -34,8 +34,10 @@ img {
 
 .bottomZone {
     background-image: url(resources/wood.jpg);
-    border-top: solid #966900;
+    border-top: 1px solid #d18451;
     display: flex;
+    /* border-top: solid 2px #ffecc8; */
+    height: 14.8em;
     flex-direction: row;
 }
 
@@ -185,7 +187,35 @@ img {
 
 /** Tabs */
 
-.tabs {
+.tabsContainer {
     z-index: 1;
-    height: 40px;
+    margin-bottom: -1px;
+}
+
+.tabs .MuiTabs-flexContainer{
+    background-color: #4f473f;
+    border-top: 1px solid #424242;
+    border-right: 1px solid #424242;
+    border-radius: 20px 20px 0 0;
+    display: inline-block;
+}
+
+.MuiButtonBase-root.tab {
+    border: 1px solid transparent;
+    color: #f5e8cf;
+    opacity: 1;
+}
+
+.MuiButtonBase-root.tab.Mui-selected {
+    
+    color: #f5e8cf;
+    border-top: solid 1px #b18e4e;
+    border-right: solid 1px #b18e4e;
+    border-left: solid 1px #b18e4e;
+    border-radius: 20px  20px 0px 0px;
+    background-image: url(resources/wood.jpg);;
+}
+
+.MuiTabs-indicator {
+    background-color: transparent !important;
 }

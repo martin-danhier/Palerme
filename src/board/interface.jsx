@@ -13,6 +13,7 @@ import three from './resources/dice_three.svg';
 import four from './resources/dice_four.svg';
 import five from './resources/dice_five.svg';
 import six from './resources/dice_six.svg';
+import { TabPanel } from './tabpanel';
 
 export const Die = {
     1: one,
@@ -36,7 +37,7 @@ export class PalermeInterface extends React.Component {
 
         this.state = {
             selected: [],
-            tab : 0,
+            tab: 0,
         }
     }
 
@@ -123,41 +124,67 @@ export class PalermeInterface extends React.Component {
             </div>
 
             <div className="bottomZoneAndTabs">
-                <div className="tabs">
-                    <Tabs value={this.state.tab} onChange={(e, value) => {
+                <div className="tabsContainer">
+                    <Tabs
+                    className="tabs"
+                    value={this.state.tab} 
+                    onChange={(e, value) => {
                         let newState = Object.assign({}, this.state);
                         newState.tab = value;
                         this.setState(newState);
                     }}>
-                        <Tab label="Ressources" />
-                        <Tab label="Cartes développements" />
-                        <Tab label="Commerce" />
+                        <Tab disableRipple disableFocusRipple className="tab" label="Ressources" />
+                        <Tab disableRipple disableFocusRipple className="tab" label="Cartes développements" />
+                        <Tab disableRipple disableFocusRipple className="tab" label="Commerce" />
                     </Tabs>
                 </div>
-                
+
                 <div className="bottomZone" >
-                    
-                    <div className="leftButtons">
-                        <Button
-                            hidden={!['idle', 'tradeOnly', 'mainStage'].includes(playerStage)}
-                            variant="outlined"
-                            onClick={() => this.props.moves.shuffleDeck()}>
-                            Mélanger les cartes
-                     </Button>
-                        <Button
-                            hidden={!['idle', 'tradeOnly', 'mainStage'].includes(playerStage)}
-                            variant="outlined"
-                            onClick={() => this.props.moves.sortDeck()}>
-                            Trier les cartes
-                    </Button>
-                    </div>
-                    <div className="inventory customScroll">
-                        {this.props.G.currentPlayer.deck.resources.map((tile, index) => {
-                            return <Grid draggable="false" item key={index} >
-                                <GameCard type={tile} visible={true} />
-                            </Grid>
-                        })}
-                    </div>
+
+                    {/* Resources */}
+                    <TabPanel index={0} value={this.state.tab}>
+                        <div className="leftButtons">
+                            <Button
+                                hidden={!['idle', 'tradeOnly', 'mainStage'].includes(playerStage)}
+                                variant="outlined"
+                                onClick={() => this.props.moves.shuffleDeck()}>
+                                Mélanger les cartes
+                            </Button>
+                            <Button
+                                hidden={!['idle', 'tradeOnly', 'mainStage'].includes(playerStage)}
+                                variant="outlined"
+                                onClick={() => this.props.moves.sortDeck()}>
+                                Trier les cartes
+                            </Button>
+                        </div>
+                        <div className="inventory customScroll">
+                            {this.props.G.currentPlayer.deck.resources.map((tile, index) => {
+                                return <Grid draggable="false" item key={index} >
+                                    <GameCard type={tile} visible={true} />
+                                </Grid>
+                            })}
+                        </div>
+                    </TabPanel>
+
+                    {/* Developments */}
+                    <TabPanel index={1} value={this.state.tab}>
+                        <div className="leftButtons">
+                            a
+                        </div>
+                        <div className="inventory customScroll">
+                            {
+                                this.props.G.currentPlayer.deck.developments.map((tile, index) => {
+                                    return <Grid draggable="false" item key={index}>
+                                        <GameCard type="tile" visible={true} />
+                                    </Grid>
+                                })
+                            }
+                        </div>
+                    </TabPanel>
+
+                    <TabPanel index={2} value={this.state.tab}>
+
+                    </TabPanel>
 
                     {/* Dices */}
                     <div className={playerStage === 'rollDices' ? "dices action" : "dices"}

@@ -8,11 +8,17 @@ export function TabPanel(props) {
         <div
             role="tabpanel"
             hidden={value !== index}
+            style={{
+                display: "inline-flex",
+                flexGrow: value === index ? 1 : 0,
+                justifyContent: "center",
+            }}
+            // hidden={value !== index}
             id={`tabpanel-${index}`}
             aria-labelledby={`tab-${index}`}
             {...other}
         >
-            {value === index && children}
+            {value === index &&  children}
         </div>
     );
 }
@@ -21,4 +27,4 @@ TabPanel.propTypes = {
     children: PropTypes.node,
     index: PropTypes.any.isRequired,
     value: PropTypes.any.isRequired,
-  };
+};
