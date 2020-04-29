@@ -21,15 +21,20 @@ img {
 
 /** Bottom zone */
 
-.bottomZone {
-    background-image: url(resources/wood.jpg);
-    border-top: solid #966900;
+.bottomZoneAndTabs {
     overflow: hidden;
     bottom: 0;
     left: 0;
     right: 0;
     position: absolute;
     z-index: 0;
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.bottomZone {
+    background-image: url(resources/wood.jpg);
+    border-top: solid #966900;
     display: flex;
     flex-direction: row;
 }
@@ -176,4 +181,11 @@ img {
 .backdrop {
     z-index: 2 !important;
     color: '#fff';
+}
+
+/** Tabs */
+
+.tabs {
+    z-index: 1;
+    height: 40px;
 }
