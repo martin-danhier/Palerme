@@ -284,5 +284,5 @@
         "victory_point": 5,
         "knight": 20
     },
-    "victoryRequirement": 3
+    "victoryRequirement": 10
 }

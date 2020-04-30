@@ -175,7 +175,7 @@ export class PalermeInterface extends React.Component {
                             {
                                 this.props.G.currentPlayer.deck.developments.map((tile, index) => {
                                     return <Grid draggable="false" item key={index}>
-                                        <GameCard type="tile" visible={true} />
+                                        <GameCard type={tile.type} visible={true} />
                                     </Grid>
                                 })
                             }

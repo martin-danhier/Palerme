@@ -50,18 +50,22 @@ function setup(ctx) {
         developments: [
           {
             cooldown: 0,
-            type: "knight"
+            type: "progress_resources"
           },
           {
             cooldown: 0,
-            type: "knight"
+            type: "progress_roads"
           },
           {
             cooldown: 0,
-            type: "knight"
+            type: "progress_monopoly"
           },
           {
             cooldown: 0,
+            type: "victory_point"
+          },
+          {
+            cooldown: 1,
             type: "knight"
           },
         ],
