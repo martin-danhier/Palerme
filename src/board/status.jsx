@@ -12,12 +12,12 @@ export class StatusBar extends React.Component {
             if (this.props.ctx.activePlayers[this.props.playerID] === 'register') {
                 return StatusMessage.standard(
                     this.props.G, this.props.playerID,
-                    'Vous devez choisir une couleur'
+                    'Vous devez choisir une couleur', []
                 );
             } else {
                 return StatusMessage.standard(
                     this.props.G, this.props.playerID,
-                    'Les autres joueurs doivent choisir une couleur'
+                    'Les autres joueurs doivent choisir une couleur', []
                 );
             }
         }
@@ -49,7 +49,7 @@ export class StatusBar extends React.Component {
                         "C'est au tour de {}.", [this.props.ctx.currentPlayer]
                         );
                 default:
-                    return StatusMessage.custom('Aucune action.');
+                    return StatusMessage.custom('Aucune action.', []);
             }
         }
 

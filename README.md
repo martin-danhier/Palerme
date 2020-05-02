@@ -1,68 +1,64 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Palerme
 
-## Available Scripts
+Palerme est une implémentation du célèbre jeu de plateau "Catane". 
 
-In the project directory, you can run:
+Nb: si vous appréciez Catane, vous pouvez acheter le jeu officiel sur [Steam](https://store.steampowered.com/app/544730/Catan_Universe/) ou en [version plateau](https://www.catan.com/board-games) !
 
-### `npm start`
+## Description du projet
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Ce projet est conçu grâce à [boardgame.io](https://boardgame.io), [React](https://reactjs.org/) et [Material-ui](https://material-ui.com/).
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Le but de ce projet est de s'exercer à la conception d'un jeu/site web avancé avec un sujet divertissant, pas de remplacer le jeu existant.
 
-### `npm test`
+Le jeu sera jouable en multijoueur à distance.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![](public/preview.png)
 
-### `npm run build`
+## Installation
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Cloner le repository
+3. Exécuter la commande `npm install` pour installer les dépendances.
+4. Pour lancer le serveur :  ``npm run server``
+5. Dans un autre terminal, lancer le site web : `npm start`
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## Statut actuel
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- [x] Logique interne du jeu
+- [x] Plateau hexagonal
+- [x] Objets sur le plateau
+  - [x] Routes
+  - [x] Colonies
+  - [x] Villes
+  - [x] Jeton numéroté
+  - [x] Ports
+  - [x] Pion voleur
+- [x] Sélection de cases du plateau
+- [x] Panneau latéral contenant la liste des joueurs
+- [x] Barre de statut
+- [x] Gestion et lancement des dés
+- [x] Système de tabs en bas de l'écran
+- [x] Affichage des ressources du joueur
+- [x] Boutons pour trier / mélanger le jeu d'un joueur
+- [x] Affichage des cartes développement du joueur
+- [x] Sélecteur de couleur
+- [ ] Annulation d'un coup
+- [ ] Jouer une carte développement
+- [ ] Sélecteur de ressource
+- [ ] Piocher dans la main d'un adversaire
+- [ ] Bouger le voleur
+- [ ] Défausser la moitié de ses ressources
+- [ ] Achats
+- [ ] Commerce maritime
+- [ ] Commerce entre les joueurs
+- [ ] Fin de partie
+- [ ] Lobby
+- [ ] Low detail mode
 
-### `npm run eject`
+Si tout cela est terminé, il sera alors possible de faire les points suivants :
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+- [ ] Éditeur de map (parce qu'un JSON n'est pas toujours très pratique)
+- [ ] Générateur de map (parce qu'un éditeur n'est pas toujours très pratique)
+- [ ] Améliorer la flexibilité du code pour pouvoir supporter des mods (Nouvelles ressources, nouvelles tuiles, ...)
+- [ ] Gestion de bateaux (routes sur l'ocean)
+- [ ] Rivière d'or (ressource au choix)
+- [ ] Rendre certains aspects désactivables (voleur, carte développement spécifique, etc.)
