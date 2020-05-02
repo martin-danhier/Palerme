@@ -1,11 +1,53 @@
-.card {
+.card {}
+
+.imgContainer {
+    display: inline-block;
+    position: relative;
 }
-/* 
-.cardPopover.MuiPopover-paper{
-    pointer-events: none;
-    padding: 15px ;
+
+.imgContainer .sandglass {
+    position: absolute;
+    width: 20%;
+    bottom: 15px;
+    right: 15px;
+}
+
+.cooldown {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.cardPopover .MuiPopover-paper .titleLine{
+   display: inline-flex;
+   flex-direction: row;
+}
+
+.cardPopover .MuiPopover-paper .titleLine h6 {
+    flex-grow: 1;
+}
+
+.cardPopover .MuiPopover-paper .titleLine .bonus {
+    margin-right: 5px;
+    color: #12632a;
+}
+
+.cardPopover .MuiPopover-paper .description {
+    margin-top: 5px;
+}
+
+.cardPopover .MuiPopover-paper {
+    text-align: justify;
+    display: flex;
+    padding: 10px;
+    max-width: 20em;
+    flex-direction: column;
+    z-index: 3;
     /* width: 150px; */
     /* margin: 15px; */
- 
-    
+}
+
+.cardPopover {
+    pointer-events: none;
+}
+
 /* MuiPaper-root MuiPopover-paper MuiPaper-elevation8 MuiPaper-rounded */

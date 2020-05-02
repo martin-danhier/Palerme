@@ -126,15 +126,15 @@ export class PalermeInterface extends React.Component {
             <div className="bottomZoneAndTabs">
                 <div className="tabsContainer">
                     <Tabs
-                    className="tabs"
-                    value={this.state.tab} 
-                    onChange={(e, value) => {
-                        let newState = Object.assign({}, this.state);
-                        newState.tab = value;
-                        this.setState(newState);
-                    }}>
+                        className="tabs"
+                        value={this.state.tab}
+                        onChange={(e, value) => {
+                            let newState = Object.assign({}, this.state);
+                            newState.tab = value;
+                            this.setState(newState);
+                        }}>
                         <Tab disableRipple disableFocusRipple className="tab" label="Ressources" />
-                        <Tab disableRipple disableFocusRipple className="tab" label="Cartes développements" />
+                        <Tab disableRipple disableFocusRipple className="tab" label="Cartes développement" />
                         <Tab disableRipple disableFocusRipple className="tab" label="Commerce" />
                     </Tabs>
                 </div>
@@ -150,12 +150,15 @@ export class PalermeInterface extends React.Component {
                                 onClick={() => this.props.moves.shuffleDeck()}>
                                 Mélanger les cartes
                             </Button>
-                            <Button
-                                hidden={!['idle', 'tradeOnly', 'mainStage'].includes(playerStage)}
-                                variant="outlined"
-                                onClick={() => this.props.moves.sortDeck()}>
-                                Trier les cartes
-                            </Button>
+                            {
+                                this.props.G.currentPlayer.deck.resources.length > 0 ?
+                                    <Button
+                                        hidden={!['idle', 'tradeOnly', 'mainStage'].includes(playerStage)}
+                                        variant="outlined"
+                                        onClick={() => this.props.moves.sortDeck()}>
+                                        Trier les cartes
+                                    </Button>
+                                    : <Typography>Vous n'avez aucune carte <i>Ressource</i>.</Typography>}
                         </div>
                         <div className="inventory customScroll">
                             {this.props.G.currentPlayer.deck.resources.map((tile, index) => {
@@ -168,16 +171,15 @@ export class PalermeInterface extends React.Component {
 
                     {/* Developments */}
                     <TabPanel index={1} value={this.state.tab}>
-                        <div className="leftButtons">
-                            a
-                        </div>
                         <div className="inventory customScroll">
                             {
-                                this.props.G.currentPlayer.deck.developments.map((tile, index) => {
-                                    return <Grid draggable="false" item key={index}>
-                                        <GameCard type={tile.type} visible={true} />
-                                    </Grid>
-                                })
+                                this.props.G.currentPlayer.deck.developments.length > 0 ?
+                                    this.props.G.currentPlayer.deck.developments.map((tile, index) => {
+                                        return <Grid draggable="false" item key={index}>
+                                            <GameCard type={tile.type} cooldown={tile.cooldown} visible={true} />
+                                        </Grid>
+                                    })
+                                    : <Typography>Vous n'avez aucune carte <i>Développement</i>.</Typography>
                             }
                         </div>
                     </TabPanel>
