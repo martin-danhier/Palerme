@@ -138,7 +138,7 @@ export class PalermeBoard extends React.Component {
      */
     handleHexClick = (event, coords) => {
         let playerStage = this.props.ctx.activePlayers[this.props.playerID];
-        if (['placeSettlement', 'placeRoad'].includes(playerStage)) {
+        if (['placeSettlement', 'placeRoad', 'moveRobber'].includes(playerStage)) {
             let newState = Object.assign({}, this.state)
             let index = indexOfCoord(this.state.selected, coords);
             if (index > -1) {
@@ -187,6 +187,11 @@ export class PalermeBoard extends React.Component {
                         newState.selected.push(coords);
                         sortCoords(newState.selected);
                     }
+                }
+                // Robber : 1 tile
+                else if (playerStage === 'moveRobber') {
+                    newState.selected = [];
+                    newState.selected.push(coords);
                 }
 
             }
@@ -510,7 +515,7 @@ export class PalermeBoard extends React.Component {
                                 return !isCoordInArray([parseInt(value[0]), parseInt(hex[0])], this.state.selected);
                             }).map(
                                 (hex) => {
-                                    let hoverable = ['placeSettlement', 'placeRoad'].includes(this.props.ctx.activePlayers[this.props.playerID]);
+                                    let hoverable = ['placeSettlement', 'placeRoad', 'moveRobber'].includes(this.props.ctx.activePlayers[this.props.playerID]);
                                     return <Hexagon
                                         key={hex[0]}
                                         className={hex[1].type === 'ocean' ?

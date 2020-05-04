@@ -109,6 +109,7 @@ function makePlayerView(G, playerID) {
     clone.settlements = G.settlements;
     clone.hexes = G.hexes;
     clone.robber = G.robber;
+    clone.robberTargets = G.robberTargets;
     clone.awards = G.awards;
     clone.trade = G.trade;
     clone.harbors = G.harbors;
@@ -150,15 +151,6 @@ function rollDices(G, ctx) {
         next: {
           currentPlayer: 'moveRobber',
           others: 'idle',
-          moveLimit: 1,
-          next: {
-            currentPlayer: 'stealResource',
-            moveLimit: 1,
-            next: {
-              currentPlayer: 'mainStage',
-              others: 'tradeOnly',
-            }
-          }
         }
       });
     }
@@ -166,15 +158,7 @@ function rollDices(G, ctx) {
     else {
       ctx.events.setActivePlayers({
         currentPlayer: 'moveRobber',
-        moveLimit: 1,
-        next: {
-          currentPlayer: 'stealResource',
-          moveLimit: 1,
-          next: {
-            currentPlayer: 'mainStage',
-            others: 'tradeOnly',
-          }
-        }
+        others: 'idle',
       })
     }
   }

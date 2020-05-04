@@ -38,7 +38,13 @@ img {
     display: flex;
     /* border-top: solid 2px #ffecc8; */
     height: 14.8em;
+    width: 100%;
     flex-direction: row;
+    overflow: hidden;
+}
+
+.tabPanel{
+    overflow: hidden;
 }
 
 .inventory {
@@ -49,7 +55,8 @@ img {
     margin-left: 10px;
     margin-top: 4px;
     margin-right: 10px;
-    overflow: auto;
+    overflow-y: hidden;
+    overflow-x: auto;
 }
 
 .dices {
@@ -57,6 +64,7 @@ img {
     border-right: solid transparent;
     display: flex;
     padding: 20px;
+    flex-shrink: 0;
     vertical-align: middle;
     justify-content: center;
     flex-direction: column;
@@ -92,6 +100,7 @@ img {
 .leftButtons {
     border-right: solid #d18451;
     display: flex;
+    flex-shrink: 0;
     flex-direction: column;
     justify-content: center;
 }

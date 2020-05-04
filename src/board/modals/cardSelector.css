@@ -1,0 +1,34 @@
+.MuiBackdrop-root.resourceSelector  {
+    z-index: 1;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    background-color: #000000b6;
+}
+
+.MuiBackdrop-root.resourceSelector .cardRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    flex-direction: row;
+    margin: 1em;
+}
+
+.MuiBackdrop-root.resourceSelector .title {
+    margin-bottom: 15px;
+    font-size: 2.3em;
+}
+
+.MuiBackdrop-root.resourceSelector .subtitle {
+    margin-bottom: 15px;
+    font-size: 1.5em;
+}
+
+.MuiBackdrop-root.resourceSelector .MuiButton-outlined.submit-button {
+    color: #ffffff;
+    border-color: #ffffff;
+    font-size: larger;
+    margin-top: 15px;
+    /* background-color: #000000a9; */
+}

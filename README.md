@@ -43,10 +43,10 @@ Le jeu sera jouable en multijoueur à distance.
 - [x] Sélecteur de couleur
 - [ ] Annulation d'un coup
 - [ ] Jouer une carte développement
-- [ ] Sélecteur de ressource
-- [ ] Piocher dans la main d'un adversaire
-- [ ] Bouger le voleur
-- [ ] Défausser la moitié de ses ressources
+- [x] Sélecteur de ressource
+- [x] Piocher dans la main d'un adversaire
+- [x] Bouger le voleur
+- [x] Défausser la moitié de ses ressources
 - [ ] Achats
 - [ ] Commerce maritime
 - [ ] Commerce entre les joueurs

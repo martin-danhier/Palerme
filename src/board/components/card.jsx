@@ -1,28 +1,35 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import './card.css';
 import { Popover, Typography } from '@material-ui/core';
 
 // load images
-const wood = require('./resources/card_wood.png');
-const clay = require('./resources/card_clay.png');
-const stone = require('./resources/card_stone.png');
-const wheat = require('./resources/card_wheat.png');
-const sheep = require('./resources/card_sheep.png');
-const back = require('./resources/card_back.png');
-const knight = require('./resources/card_knight.png');
-const roads = require('./resources/card_progress_roads.png');
-const monopoly = require('./resources/card_progress_monopoly.png');
-const victoryPoint = require('./resources/card_victory_point.png');
-const resources = require('./resources/card_progress_resources.png');
-const sandglass = require('./resources/sandglass.svg');
+const wood = require('../resources/card_wood.png');
+const clay = require('../resources/card_clay.png');
+const stone = require('../resources/card_stone.png');
+const wheat = require('../resources/card_wheat.png');
+const sheep = require('../resources/card_sheep.png');
+const back = require('../resources/card_back.png');
+const knight = require('../resources/card_knight.png');
+const roads = require('../resources/card_progress_roads.png');
+const monopoly = require('../resources/card_progress_monopoly.png');
+const victoryPoint = require('../resources/card_victory_point.png');
+const resources = require('../resources/card_progress_resources.png');
+const sandglass = require('../resources/sandglass.svg');
 
 
 /**
- * Manages the drawing of a card
- * @extends React.Component<{type: string, visible: boolean}>
- */
+* @extends {React.Component<{selected:boolean, visible:boolean, type:string, onClick:Function, cooldown:number>}
+*/
 export class GameCard extends React.Component {
+    static propTypes = {
+        selected: PropTypes.bool,
+        visible: PropTypes.bool,
+        type: PropTypes.string,
+        onClick: PropTypes.func,
+        cooldown: PropTypes.number,
+    }
 
     constructor(props) {
         super(props);
@@ -132,10 +139,10 @@ export class GameCard extends React.Component {
         else return "Carte inconnue";
     }
 
-    getBonus = (id) =>{
+    getBonus = (id) => {
         if (this.props.visible === true) {
             switch (id) {
-                
+
                 case 'knight':
                     return "+1 ⚔";
                 case 'victory_point':
@@ -147,7 +154,14 @@ export class GameCard extends React.Component {
         else return "";
     }
 
-    render() {
+    render = () => {
+        let cardClass = "card";
+        if (this.props.onClick !== undefined) {
+            cardClass += " card-clickable";
+        }
+        if (this.props.selected === true) {
+            cardClass += " selected";
+        }
 
         return (
             <div>
@@ -158,18 +172,20 @@ export class GameCard extends React.Component {
                             this.setState({ anchorEl: e.currentTarget });
                     }}
                     onMouseLeave={(e) => {
-                        console.log("hein")
                         if (this.isDevelopment)
                             this.setState({ anchorEl: null });
                     }}
+                    onClick={(event) => {
+                        if (this.props.onClick !== undefined) {
+                            this.props.onClick(event);
+                        }
+                    }}
 
                     aria-owns={this.state.anchorEl !== null ? 'mouse-over-popover' : undefined}
-                    aria-haspopup="true">
+                    aria-haspopup={this.isDevelopment}>
                     <img
-                        style={{ margin: 3 }}
-                        className="card"
+                        className={cardClass}
                         draggable="false"
-                        width="125px"
                         src={this.chooseImage()}
                         alt={this.getDisplayName(this.props.type) ?? "Ressource inconnue"}
 
@@ -211,7 +227,7 @@ export class GameCard extends React.Component {
                             && <Typography style={{ marginTop: "8px" }}>
                                 <b>{
                                     this.props.cooldown === 1 ? "Disponible au prochain tour."
-                                        : `Disponible dans ${this.cooldown} tours.`
+                                        : `Disponible dans ${this.props.cooldown} tours.`
                                 }</b>
                             </Typography>}
                     </Popover>}

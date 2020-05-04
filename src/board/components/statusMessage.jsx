@@ -1,5 +1,5 @@
 import React from 'react';
-import { getPlayerName, getPlayerColor } from './utils';
+import { getPlayerName, getPlayerColor } from '../utils';
 
 export class StatusMessage {
     /** 

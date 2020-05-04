@@ -4,6 +4,9 @@ import { Typography, Button } from '@material-ui/core';
 import './status.css';
 import { StatusMessage } from './statusMessage';
 
+/**
+ * @extends {React.Component<{ctx: {activePlayers: object}}>}
+ */
 export class StatusBar extends React.Component {
 
     getMessage() {
@@ -20,6 +23,25 @@ export class StatusBar extends React.Component {
                     'Les autres joueurs doivent choisir une couleur', []
                 );
             }
+        }
+        if (this.props.ctx.phase === 'main' && (currentPlayerStage === 'discardHalf' || (currentPlayerStage === undefined))) {
+            let players = Object.keys(this.props.ctx.activePlayers);
+            let message = '{}';
+
+            // Create the message
+            if (players.length === 1) {
+                message += ' doit défausser la moitié de ses ressources.';
+            }
+            else {
+                for (let i = 1; i < players.length - 1; i++) {
+                    message += ', {}'
+                }
+                message += ' et {} doivent défausser la moitié de leurs ressources.';
+            }
+
+            return StatusMessage.standard(
+                this.props.G, this.props.playerID, message, players
+            )
         }
         else {
             switch (currentPlayerStage) {
@@ -45,9 +67,19 @@ export class StatusBar extends React.Component {
                     );
                 case 'mainStage':
                     return StatusMessage.standard(
-                        this.props.G, this.props.playerID, 
+                        this.props.G, this.props.playerID,
                         "C'est au tour de {}.", [this.props.ctx.currentPlayer]
-                        );
+                    );
+                case 'moveRobber':
+                    return StatusMessage.standard(
+                        this.props.G, this.props.playerID,
+                        "{} peut déplacer le voleur.", [this.props.ctx.currentPlayer]
+                    );
+                case 'stealResource':
+                    return StatusMessage.standard(
+                        this.props.G, this.props.playerID,
+                        "{} peut voler une ressource.", [this.props.ctx.currentPlayer]
+                    );
                 default:
                     return StatusMessage.custom('Aucune action.', []);
             }
@@ -70,10 +102,10 @@ export class StatusBar extends React.Component {
             <Typography variant="h6">
                 {message.render()}
             </Typography>
-            
+
             {
-                ['placeSettlement', 'placeRoad']
-                .includes(this.props.ctx.activePlayers[this.props.playerID]) &&
+                ['placeSettlement', 'placeRoad', 'moveRobber', 'placeTown']
+                    .includes(this.props.ctx.activePlayers[this.props.playerID]) &&
                 <Button
                     className="button"
                     variant="outlined"
@@ -82,6 +114,18 @@ export class StatusBar extends React.Component {
                     OK
                 </Button>
             }
+
+            {
+                this.props.ctx.activePlayers[this.props.playerID] === 'mainStage' &&
+                <Button
+                    className="button"
+                    variant="outlined"
+                    color="inherit"
+                    onClick={() => this.props.events.endTurn()}>
+                    Fin de tour
+                </Button>
+            }
+            
 
         </div >;
     }
