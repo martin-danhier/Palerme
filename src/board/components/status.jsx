@@ -80,6 +80,16 @@ export class StatusBar extends React.Component {
                         this.props.G, this.props.playerID,
                         "{} peut voler une ressource.", [this.props.ctx.currentPlayer]
                     );
+                case 'chooseResources':
+                    return StatusMessage.standard(
+                        this.props.G, this.props.playerID,
+                        "{} peut recevoir deux ressources au choix.", [this.props.ctx.currentPlayer]
+                    );
+                case 'monopoly':
+                    return StatusMessage.standard(
+                        this.props.G, this.props.playerID,
+                        "Monopole ! {} choisit une ressource à réquisitionner.", [this.props.ctx.currentPlayer]
+                    );
                 default:
                     return StatusMessage.custom('Aucune action.', []);
             }

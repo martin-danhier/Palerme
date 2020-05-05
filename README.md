@@ -42,7 +42,8 @@ Le jeu sera jouable en multijoueur à distance.
 - [x] Affichage des cartes développement du joueur
 - [x] Sélecteur de couleur
 - [ ] Annulation d'un coup
-- [ ] Jouer une carte développement
+- [x] Jouer une carte développement
+- [x] Minimiser les onglets pour mieux voir le plateau
 - [x] Sélecteur de ressource
 - [x] Piocher dans la main d'un adversaire
 - [x] Bouger le voleur

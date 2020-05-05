@@ -1,6 +1,6 @@
 import React from 'react';
 import { PalermeBoard } from './board';
-import { Button, Grid, Typography, Tab, Tabs } from '@material-ui/core';
+import { Button, Grid, Typography, Tab, Tabs, Card } from '@material-ui/core';
 import ColorPickerDialog from './modals/colorPicker';
 import { GameCard } from './components/card';
 
@@ -40,6 +40,7 @@ export class PalermeInterface extends React.Component {
 
         this.state = {
             selected: [],
+            collapsed: false,
             stealTo: null,
             tab: 0,
         }
@@ -128,6 +129,8 @@ export class PalermeInterface extends React.Component {
 
     generateSelector = () => {
         let playerStage = this.props.ctx.activePlayers[this.props.playerID];
+
+
         switch (playerStage) {
             case 'discardHalf':
                 let numberToSelect = Math.floor(this.props.G.currentPlayer.deck.resources.length / 2);
@@ -146,17 +149,17 @@ export class PalermeInterface extends React.Component {
                 if (this.state.stealTo === null) {
                     let players = {};
                     for (let player in this.props.G.otherPlayers) {
-                        if (playerIsNextToRobber(this.props.G, player)){
+                        if (playerIsNextToRobber(this.props.G, player)) {
                             players[player] = this.props.G.otherPlayers[player].name;
                         }
                     }
-                    return <PlayerSelector 
-                    players={players}
-                    onSubmit={(event, player) => {
-                        let newState = Object.assign({}, this.state);
-                        newState.stealTo = player;
-                        this.setState(newState);
-                    }}/>;
+                    return <PlayerSelector
+                        players={players}
+                        onSubmit={(event, player) => {
+                            let newState = Object.assign({}, this.state);
+                            newState.stealTo = player;
+                            this.setState(newState);
+                        }} />;
                 }
                 else {
                     return <CardSelector
@@ -170,6 +173,43 @@ export class PalermeInterface extends React.Component {
                             }
                         }} />
                 }
+            case 'chooseResources':
+                let cards = ['clay', 'sheep', 'stone', 'wheat', 'wood'];
+                return <CardSelector
+                    open={true}
+                    title="Vous recevez deux ressources !"
+                    numberToSelect={1}
+                    subtitle={this.state.selected.length === 0 ?
+                        "Choisissez la première ressource."
+                        : "Choisissez la deuxième ressource."}
+                    cards={cards}
+                    onSubmit={(e, selected) => {
+
+                        let newState = Object.assign({}, this.state);
+                        if (this.state.selected.length === 0) {
+                            newState.selected.push(cards[selected[0]]);
+                        }
+
+                        // If all resources : submit
+                        else {
+                            newState.selected = [];
+                            this.props.moves.chooseResources(this.state.selected[0], cards[selected[0]]);
+                        }
+
+                        this.setState(newState);
+
+                    }} />
+            case 'monopoly':
+                let resources = ['clay', 'sheep', 'stone', 'wheat', 'wood'];
+                return <CardSelector
+                    open={true}
+                    title="Choissisez la ressource à réquisitionner."
+                    numberToSelect={1}
+                    subtitle="Les autres joueurs devront vous donner tous leurs exemplaires de cette ressource."
+                    cards={resources}
+                    onSubmit={(e, selected) => {
+                        this.props.moves.monopoly(resources[selected[0]]);
+                    }} />
             default:
                 return undefined;
         }
@@ -181,7 +221,7 @@ export class PalermeInterface extends React.Component {
 
     render() {
         let playerStage = this.props.ctx.activePlayers[this.props.playerID];
-        return <div>
+        return <div className="root">
 
             {/* Status bar */}
             <StatusBar {...this.props} onClick={this.handleOKButtonClicked} />
@@ -206,7 +246,12 @@ export class PalermeInterface extends React.Component {
                         value={this.state.tab}
                         onChange={(e, value) => {
                             let newState = Object.assign({}, this.state);
-                            newState.tab = value;
+                            if (this.state.tab === value) {
+                                newState.collapsed = !newState.collapsed;
+                            } else {
+                                newState.collapsed = false;
+                                newState.tab = value;
+                            }
                             this.setState(newState);
                         }}>
                         <Tab disableRipple disableFocusRipple className="tab" label="Ressources" />
@@ -215,33 +260,35 @@ export class PalermeInterface extends React.Component {
                     </Tabs>
                 </div>
 
-                <div className="bottomZone" >
+                <div className={this.state.collapsed ? "bottomZone hidden" : "bottomZone"}>
 
                     {/* Resources */}
                     <TabPanel className="tabPanel" index={0} value={this.state.tab}>
                         <div className="leftButtons">
                             <Button
-                                hidden={!['idle', 'tradeOnly', 'mainStage'].includes(playerStage)}
+                                disabled={!['idle', 'tradeOnly', 'mainStage'].includes(playerStage)}
                                 variant="outlined"
                                 onClick={() => this.props.moves.shuffleDeck()}>
                                 Mélanger les cartes
                             </Button>
-                            {
-                                this.props.G.currentPlayer.deck.resources.length > 0 ?
-                                    <Button
-                                        hidden={!['idle', 'tradeOnly', 'mainStage'].includes(playerStage)}
-                                        variant="outlined"
-                                        onClick={() => this.props.moves.sortDeck()}>
-                                        Trier les cartes
-                                    </Button>
-                                    : <Typography>Vous n'avez aucune carte <i>Ressource</i>.</Typography>}
+                            <Button
+                                disabled={!['idle', 'tradeOnly', 'mainStage'].includes(playerStage)}
+                                variant="outlined"
+                                onClick={() => this.props.moves.sortDeck()}>
+                                Trier les cartes
+                            </Button>
                         </div>
                         <div className="inventory customScroll">
-                            {this.props.G.currentPlayer.deck.resources.map((tile, index) => {
-                                return <Grid draggable="false" item key={index} >
-                                    <GameCard type={tile} visible={true} />
-                                </Grid>
-                            })}
+                            {
+                                this.props.G.currentPlayer.deck.resources.length > 0 ?
+                                    this.props.G.currentPlayer.deck.resources.map((tile, index) => {
+                                        return <Grid draggable="false" item key={index} >
+                                            <GameCard type={tile} visible={true} />
+                                        </Grid>
+                                    })
+                                    : <Typography>
+                                        Vous n'avez aucune carte <i>Ressource</i>.
+                                    </Typography>}
                         </div>
                     </TabPanel>
 
@@ -251,8 +298,21 @@ export class PalermeInterface extends React.Component {
                             {
                                 this.props.G.currentPlayer.deck.developments.length > 0 ?
                                     this.props.G.currentPlayer.deck.developments.map((tile, index) => {
+                                        let onClick;
+
+                                        // use a development card when it is permitted
+                                        if (playerStage === 'mainStage' && tile.cooldown === 0 && tile.type !== 'victory_point') {
+                                            onClick = (event) => {
+                                                this.props.moves.useDevelopment(index);
+                                            }
+                                        }
+
                                         return <Grid draggable="false" item key={index}>
-                                            <GameCard type={tile.type} cooldown={tile.cooldown} visible={true} />
+                                            <GameCard
+                                                type={tile.type}
+                                                cooldown={tile.cooldown}
+                                                visible={true}
+                                                onClick={onClick} />
                                         </Grid>
                                     })
                                     : <Typography>Vous n'avez aucune carte <i>Développement</i>.</Typography>

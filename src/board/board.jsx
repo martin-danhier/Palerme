@@ -502,7 +502,7 @@ export class PalermeBoard extends React.Component {
                 {/* width={812} height={770}*/}
                 <HexGrid
                     width={this.props.dimensions.width}
-                    height={this.props.dimensions.height - 20}
+                    height={this.props.dimensions.height -6}
                 >
                     <Layout
                         spacing={0.992}

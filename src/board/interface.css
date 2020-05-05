@@ -43,6 +43,10 @@ img {
     overflow: hidden;
 }
 
+.bottomZone.hidden {
+    height: 0;
+}
+
 .tabPanel{
     overflow: hidden;
 }
@@ -110,6 +114,12 @@ img {
     border: solid 2px #ffecc8;
     background-color: #a56941;
     margin: 15px;
+}
+
+.leftButtons .MuiButton-outlined.Mui-disabled {
+    border: solid 2px #88775d;
+    background-color: #8f6143;
+    color: #ac936e;
 }
 
 .leftButtons .MuiButton-outlined:hover {
