@@ -63,6 +63,18 @@ img {
     overflow-x: auto;
 }
 
+.inventory .invScroll {
+    display: flex;
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+
+.inventory .invContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .dices {
     border-left: solid #d18451;
     border-right: solid transparent;

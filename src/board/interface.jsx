@@ -1,6 +1,6 @@
 import React from 'react';
 import { PalermeBoard } from './board';
-import { Button, Grid, Typography, Tab, Tabs, Card } from '@material-ui/core';
+import { Button, Typography, Tab, Tabs } from '@material-ui/core';
 import ColorPickerDialog from './modals/colorPicker';
 import { GameCard } from './components/card';
 
@@ -279,44 +279,51 @@ export class PalermeInterface extends React.Component {
                             </Button>
                         </div>
                         <div className="inventory customScroll">
-                            {
-                                this.props.G.currentPlayer.deck.resources.length > 0 ?
-                                    this.props.G.currentPlayer.deck.resources.map((tile, index) => {
-                                        return <Grid draggable="false" item key={index} >
-                                            <GameCard type={tile} visible={true} />
-                                        </Grid>
-                                    })
-                                    : <Typography>
-                                        Vous n'avez aucune carte <i>Ressource</i>.
+                            <div className="invScroll">
+                                <div className="invContent">
+                                    {
+                                        this.props.G.currentPlayer.deck.resources.length > 0 ?
+                                            this.props.G.currentPlayer.deck.resources.map((tile, index) => {
+                                                return <GameCard key={index} type={tile} visible={true} />
+
+                                            })
+                                            : <Typography>
+                                                Vous n'avez aucune carte <i>Ressource</i>.
                                     </Typography>}
+                                </div>
+                            </div>
                         </div>
                     </TabPanel>
 
                     {/* Developments */}
                     <TabPanel className="tabPanel" index={1} value={this.state.tab}>
                         <div className="inventory customScroll">
-                            {
-                                this.props.G.currentPlayer.deck.developments.length > 0 ?
-                                    this.props.G.currentPlayer.deck.developments.map((tile, index) => {
-                                        let onClick;
+                            <div className="invScroll">
+                                <div className="invContent">
+                                    {
+                                        this.props.G.currentPlayer.deck.developments.length > 0 ?
+                                            this.props.G.currentPlayer.deck.developments.map((tile, index) => {
+                                                let onClick;
 
-                                        // use a development card when it is permitted
-                                        if (playerStage === 'mainStage' && tile.cooldown === 0 && tile.type !== 'victory_point') {
-                                            onClick = (event) => {
-                                                this.props.moves.useDevelopment(index);
-                                            }
-                                        }
+                                                // use a development card when it is permitted
+                                                if (playerStage === 'mainStage' && tile.cooldown === 0 && tile.type !== 'victory_point') {
+                                                    onClick = (event) => {
+                                                        this.props.moves.useDevelopment(index);
+                                                    }
+                                                }
 
-                                        return <Grid draggable="false" item key={index}>
-                                            <GameCard
-                                                type={tile.type}
-                                                cooldown={tile.cooldown}
-                                                visible={true}
-                                                onClick={onClick} />
-                                        </Grid>
-                                    })
-                                    : <Typography>Vous n'avez aucune carte <i>Développement</i>.</Typography>
-                            }
+                                                return <GameCard
+                                                    key={index}
+                                                    type={tile.type}
+                                                    cooldown={tile.cooldown}
+                                                    visible={true}
+                                                    onClick={onClick} />
+
+                                            })
+                                            : <Typography>Vous n'avez aucune carte <i>Développement</i>.</Typography>
+                                    }
+                                </div>
+                            </div>
                         </div>
                     </TabPanel>
 
