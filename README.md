@@ -48,7 +48,7 @@ Le jeu sera jouable en multijoueur à distance.
 - [x] Piocher dans la main d'un adversaire
 - [x] Bouger le voleur
 - [x] Défausser la moitié de ses ressources
-- [ ] Achats
+- [x] Achats
 - [ ] Commerce maritime
 - [ ] Commerce entre les joueurs
 - [ ] Fin de partie

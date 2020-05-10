@@ -1,0 +1,40 @@
+.buyButton {
+    padding: 2px;
+    display: inline-block;
+    height: fit-content;
+}
+
+.buyButton .icon.enabled {
+    width: 60px;
+    display: block;
+    
+    border: 3px solid #e0aa56;
+}
+
+.buyButton .icon {
+    width: 60px;
+    display: block;
+    border: 3px solid #47361b;
+}
+
+.buyButton .icon.enabled:hover {
+    cursor: pointer;
+    border: 3px solid #f1d6aa;
+}
+
+.shopPopover {
+    pointer-events: none;
+}
+
+.shopPopover .MuiPopover-paper  {
+    max-width: 22em;
+}
+
+.shopPopover .price .priceIcon {
+    height: 28px;
+    margin:5px;
+}
+
+.shopPopover .price {
+    margin-top: 5px;
+}

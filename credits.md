@@ -1,0 +1,6 @@
+- [CATAN GmbH](https://www.catan.com/about-us/catan-gmbh) for the original game !
+- [Monkik](https://www.flaticon.com/authors/monkik) for Sheep icon
+- [DinosoftLabs](https://www.flaticon.com/authors/dinosoftlabs) for Wheat icon
+- [Freepik](https://www.flaticon.com/authors/freepik) for Stone icon
+- [Smashicons](https://www.flaticon.com/authors/smashicons) for Clay icon
+- [Nikita Golubev](https://www.flaticon.com/free-icon/wood_2670588) for Wood icon

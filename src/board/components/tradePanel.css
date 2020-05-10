@@ -1,0 +1,67 @@
+.resourceCount{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    flex-shrink: 0;
+    border-right: solid #97623f;
+    color: #fffaee;
+    /* background-color: #412a1088; */
+    padding: 10px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+
+.resourceCount .resourceRow {
+    display: inline-flex;
+    flex-direction: row;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    justify-content: center;
+    align-content: center;
+    line-height: normal;
+}
+
+.resourceCount .resourceRow .resourceText {
+    line-height: 30px;
+    vertical-align: middle;
+}
+
+.resourceCount .resourceRow .icon {
+    margin-right: 15px;
+    
+}
+
+.shop {
+    padding: 2px 15px;
+    border-right: solid #97623f;
+    flex-shrink: 0;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    color: #eeead4;
+    
+}
+
+.MuiTypography-root.label {
+    margin-top: 10px;
+}
+
+.shopList {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+}
+
+.shopListContainer {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.harbors {
+    flex-grow: 1;
+}

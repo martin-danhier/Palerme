@@ -17,6 +17,7 @@ import six from './resources/dice_six.svg';
 import { TabPanel } from './components/tabpanel';
 import { CardSelector } from './modals/cardSelector';
 import { sameCoords, playerIsNextToRobber } from '../game/hexes';
+import { TradePanel } from './components/tradePanel';
 
 export const Die = {
     1: one,
@@ -42,7 +43,7 @@ export class PalermeInterface extends React.Component {
             selected: [],
             collapsed: false,
             stealTo: null,
-            tab: 0,
+            tab: 2,
         }
     }
 
@@ -328,7 +329,7 @@ export class PalermeInterface extends React.Component {
                     </TabPanel>
 
                     <TabPanel index={2} value={this.state.tab}>
-
+                        <TradePanel {...this.props} />
                     </TabPanel>
 
                     {/* Dices */}

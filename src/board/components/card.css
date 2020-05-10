@@ -34,29 +34,29 @@
     margin-left: 10px;
 }
 
-.cardPopover .MuiPopover-paper .titleLine{
+.MuiPopover-paper .titleLine{
    display: inline-flex;
    flex-direction: row;
 }
 
-.cardPopover .MuiPopover-paper .titleLine h6 {
+.MuiPopover-paper .titleLine h6 {
     flex-grow: 1;
 }
 
-.cardPopover .MuiPopover-paper .titleLine .bonus {
+.MuiPopover-paper .titleLine .bonus {
     margin-right: 5px;
     color: #1ba344;
 }
 
-.cardPopover .MuiPopover-paper .description {
+.MuiPopover-paper .description {
     margin-top: 5px;
 }
 
-.cardPopover .MuiPopover-paper {
+.MuiPopover-paper {
     text-align: justify;
     display: flex;
     padding: 10px;
-    max-width: 20em;
+    max-width: 20em !important;
     flex-direction: column;
     z-index: 3;
     /* width: 150px; */

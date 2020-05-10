@@ -30,11 +30,14 @@ img {
     z-index: 0;
     display: inline-flex;
     flex-direction: column;
+    
 }
 
 .bottomZone {
-    background-image: url(resources/wood.jpg);
-    border-top: 1px solid #d18451;
+    
+    background-image: url(resources/darker_wood.jpg);
+    
+    /* border-top: 1px solid #865738; */
     display: flex;
     /* border-top: solid 2px #ffecc8; */
     height: 14.8em;
@@ -121,20 +124,20 @@ img {
     justify-content: center;
 }
 
-.leftButtons .MuiButton-outlined {
+.bottomZone .MuiButton-outlined {
     color: #ffecc8;
     border: solid 2px #ffecc8;
     background-color: #a56941;
     margin: 15px;
 }
 
-.leftButtons .MuiButton-outlined.Mui-disabled {
+.bottomZone .MuiButton-outlined.Mui-disabled {
     border: solid 2px #88775d;
     background-color: #8f6143;
     color: #ac936e;
 }
 
-.leftButtons .MuiButton-outlined:hover {
+.bottomZone .MuiButton-outlined:hover {
     background-color: #7a5034 !important;
 }
 
@@ -244,7 +247,7 @@ img {
     border-right: solid 1px #b18e4e;
     border-left: solid 1px #b18e4e;
     border-radius: 20px  20px 0px 0px;
-    background-image: url(resources/wood.jpg);;
+    background-image: url(resources/darker_wood.jpg);
 }
 
 .MuiTabs-indicator {
