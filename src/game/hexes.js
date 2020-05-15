@@ -115,6 +115,20 @@ export function isVertexAdjacentToEdge(vertex, edge) {
     return isCoordInArray(edge[0], vertex) && isCoordInArray(edge[1], vertex);
 }
 
+export function getPlayerHarbors(G, player) {
+    let found = [];
+    for (let harbor of G.harbors) {
+        if (! found.includes(harbor.type)) {
+            for (let settlement of G.settlements) {
+                if (settlement.player === player && isVertexAdjacentToEdge(settlement.hexes, harbor.hexes)) {
+                    found.push(harbor.type);
+                }
+            }
+        }
+    }
+    return found;
+}
+
 export function playerHasHarbor(G, player, harborType) {
     for (let harbor of G.harbors) {
         if (harbor.type === harborType) {

@@ -1,0 +1,53 @@
+.harborsContent {
+    flex-grow: 1;
+    /* padding-top: 10px; */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.harborsContent .selectResource {
+    flex-shrink: 0;
+    
+}
+
+.harborsContent .selectResourceWrapper .MuiTypography-root {
+    margin-right: 10px;
+}
+
+.harborsContent .selectResourceWrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.harborsContent .MuiButton-outlined.okButton {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.harborsContent .resIcon.selected {
+    border: 3px solid white;
+}
+
+.harborsContent .resIcon:not(.disabled):hover  {
+    background-color: #aa884975;
+    cursor: pointer;
+}
+
+.harborsContent .resIcon.disabled {
+    border-color: #857f7f;
+}
+
+.harborsContent .resIcon {
+    width: 40px;
+    padding: 5px;
+    margin-left: 2px;
+    margin-right: 2px;
+    border-radius: 5px;
+    border: 1px solid #f0eeee;
+    
+}

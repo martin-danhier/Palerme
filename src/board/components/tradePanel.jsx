@@ -1,5 +1,6 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
+import { HarborTrade } from './tradeHarbors';
 
 import './tradePanel.css';
 import { BuyButton } from './buyButton';
@@ -73,7 +74,14 @@ export class TradePanel extends React.Component {
                 </div>
             </div>
             <div className="harbors">
-
+                <Typography className="label" variant="h6">Commerce maritime</Typography>
+                <HarborTrade icons={icons} {...this.props} />
+            </div>
+            <div className="marketplace">
+                <Typography className="label" variant="h6">Commerce intérieur</Typography>
+                <div className="marketplaceContent">
+                    
+                </div>
             </div>
         </>
     }

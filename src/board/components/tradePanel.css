@@ -32,7 +32,7 @@
     
 }
 
-.shop {
+.shop, .harbors, .marketplace {
     padding: 2px 15px;
     border-right: solid #97623f;
     flex-shrink: 0;
@@ -62,6 +62,13 @@
 }
 
 
-.harbors {
+
+
+.marketplace {
+    flex-grow: 1;
+    border-right: unset;
+}
+
+.marketplaceContent {
     flex-grow: 1;
 }
